@@ -1,16 +1,18 @@
-let employee_id = 0;
-
-window.onload = function() {
-    loadContent('LoginPage.html');
-};
+let histAPI=!!(window.history && history.pushState);
 
 function input_click() {
-    let idInput = document.getElementById("uniq-id");
-    if (!idInput.validity.valid) {
-        return;
+    let login = document.getElementById("uniq-login");
+    let password = document.getElementById("uniq-password");
+
+    getUser(login, password);
+}
+
+function whoIsIt(data) {
+    if (data.status === undefined) {
+        loadContent("views/employee/employeeView.html");
+    } else {
+        loadContent("views/employee/patientView.html");
     }
-    employee_id = idInput.value;
-    loadContent("views/employee/employeeView.html");
 }
 
 function navbarClick(bar_name) {
@@ -23,4 +25,22 @@ function navbarClick(bar_name) {
             loadContent('LoginPage.html');
             break;
     }
+}
+
+window.onload = function(){
+    loadContent('LoginPage.html');
+    if (histAPI) {
+        window.setTimeout(function() {
+            window.addEventListener("popstate",
+                function() {
+                    alert(location.pathname);
+                    popstate(location.pathname);
+                },
+                false);
+        }, 1);
+    }
+};
+
+function popstate(url) {
+    loadContent(url);
 }

@@ -1,7 +1,6 @@
 package main.java.com.task.daolayer.mysqldao;
 
 import main.java.com.task.daolayer.PatientCrud;
-import main.java.com.task.daolayer.WriteInfo;
 import main.java.com.task.daolayer.configure.BaseConnectionPool;
 import main.java.com.task.daolayer.configure.ConfigurationManager;
 import main.java.com.task.daolayer.configure.ConnectionPool;
@@ -9,7 +8,6 @@ import main.java.com.task.model.person.Gender;
 import main.java.com.task.model.person.Patient;
 import main.java.com.task.model.therapy.*;
 import com.sun.istack.internal.Nullable;
-import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.sql.*;
@@ -61,7 +59,6 @@ public class MySqlDaoCrudPatient implements PatientCrud {
             }
             connectionPool.putBack(connection);
         } catch (SQLException | IOException e) {
-            WriteInfo.writeErrorMessage(e.getMessage());
         }
 
         return patient;
@@ -90,7 +87,6 @@ public class MySqlDaoCrudPatient implements PatientCrud {
             }
             connectionPool.putBack(connection);
         } catch (IOException | SQLException e) {
-            WriteInfo.writeErrorMessage(e.getMessage());
         }
 
         return patients;
@@ -110,7 +106,6 @@ public class MySqlDaoCrudPatient implements PatientCrud {
             result = preparedStatement.executeUpdate();
             connectionPool.putBack(connection);
         } catch (SQLException | IOException e) {
-            WriteInfo.writeErrorMessage(e.getMessage());
         }
 
         return result == 1;
@@ -126,7 +121,6 @@ public class MySqlDaoCrudPatient implements PatientCrud {
             result = preparedStatement.executeUpdate();
             connectionPool.putBack(connection);
         } catch (SQLException | IOException e) {
-            WriteInfo.writeErrorMessage(e.getMessage());
         }
 
         return result == 1;
@@ -143,7 +137,6 @@ public class MySqlDaoCrudPatient implements PatientCrud {
             result = preparedStatement.executeUpdate();
             connectionPool.putBack(connection);
         } catch (SQLException | IOException e) {
-            WriteInfo.writeErrorMessage(e.getMessage());
         }
 
         return result == 1;

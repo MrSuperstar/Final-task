@@ -1,13 +1,12 @@
 package main.java.com.task.daolayer.mysqldao;
 
+import com.sun.javafx.binding.Logging;
 import main.java.com.task.daolayer.EmployeeCrud;
-import main.java.com.task.daolayer.WriteInfo;
 import main.java.com.task.daolayer.configure.BaseConnectionPool;
 import main.java.com.task.daolayer.configure.ConfigurationManager;
 import main.java.com.task.daolayer.configure.ConnectionPool;
 import main.java.com.task.model.person.*;
-
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.sql.*;
@@ -18,7 +17,6 @@ import java.util.Collection;
  * Implement CRUD operations for an employee entity.
  */
 public class MySqlDaoCrudEmployee implements EmployeeCrud {
-
     /* A block of constants */
     private static final String EMPLOYEE_BY_ID = "sql.query.select.employeeById";
     private static final String SELECT_ALL_EMPLOYEES = "sql.query.select.employees";
@@ -54,13 +52,10 @@ public class MySqlDaoCrudEmployee implements EmployeeCrud {
                         : new Nurse(name, Gender.valueOf(gender.toUpperCase()));
 
                 employee.getHuman().setId(id);
-                connectionPool.putBack(connection);
             }
+            connectionPool.putBack(connection);
         } catch (SQLException | IOException e) {
-            WriteInfo.writeErrorMessage(e.getMessage());
-        }
-        if (employee != null) {
-            WriteInfo.writeInfoMessage("Information about the employee( : " + employee.toString() + ") successfully received");
+
         }
         return employee;
     }
@@ -93,7 +88,6 @@ public class MySqlDaoCrudEmployee implements EmployeeCrud {
 
             connectionPool.putBack(connection);
         } catch (IOException | SQLException e) {
-            WriteInfo.writeErrorMessage(e.getMessage());
         }
 
         return employees;
@@ -111,7 +105,6 @@ public class MySqlDaoCrudEmployee implements EmployeeCrud {
             result = preparedStatement.executeUpdate();
             connectionPool.putBack(connection);
         } catch (SQLException | IOException e) {
-            WriteInfo.writeErrorMessage(e.getMessage());
         }
 
         return result == 1;
@@ -129,7 +122,6 @@ public class MySqlDaoCrudEmployee implements EmployeeCrud {
             result = preparedStatement.executeUpdate();
             connectionPool.putBack(connection);
         } catch (SQLException | IOException e) {
-            WriteInfo.writeErrorMessage(e.getMessage());
         }
 
         return result == 1;
@@ -149,7 +141,6 @@ public class MySqlDaoCrudEmployee implements EmployeeCrud {
             result = preparedStatement.executeUpdate();
             connectionPool.putBack(connection);
         } catch (SQLException | IOException e) {
-            WriteInfo.writeErrorMessage(e.getMessage());
         }
 
         return result == 1;

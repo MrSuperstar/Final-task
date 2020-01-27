@@ -4,7 +4,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
-import org.apache.log4j.Logger;
 
 /**
  * A class for retrieving data from configuration files by keys.
@@ -12,7 +11,6 @@ import org.apache.log4j.Logger;
  */
 public class ConfigurationManager {
 
-    private static final Logger logger = Logger.getLogger(ConfigurationManager.class);
     private static final ConfigurationManager ourInstance = new ConfigurationManager();
     private static final String PATH_FROM_FILE = "E:\\Development\\Final-task\\ServletsProject\\resources\\config.properties";
     private static final String DEFAULT_KEY = "db.url";
@@ -36,7 +34,6 @@ public class ConfigurationManager {
             property.load(fileInputStream);
             data = property.getProperty(key, DEFAULT_KEY);
         } catch (FileNotFoundException e) {
-            logger.error(e.getMessage(), e);
         } finally {
             fileInputStream.close();
         }

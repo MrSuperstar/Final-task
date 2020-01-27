@@ -1,12 +1,10 @@
 package main.java.com.task.daolayer.mysqldao;
 
 import main.java.com.task.daolayer.TherapyCrud;
-import main.java.com.task.daolayer.WriteInfo;
 import main.java.com.task.daolayer.configure.BaseConnectionPool;
 import main.java.com.task.daolayer.configure.ConfigurationManager;
 import main.java.com.task.daolayer.configure.ConnectionPool;
 import main.java.com.task.model.therapy.*;
-import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.sql.*;
@@ -57,7 +55,6 @@ public class MySqlDaoCrudTherapy implements TherapyCrud {
             }
             connectionPool.putBack(connection);
         } catch (SQLException | IOException e) {
-            WriteInfo.writeErrorMessage(e.getMessage());
         }
 
         return therapy;
@@ -83,7 +80,6 @@ public class MySqlDaoCrudTherapy implements TherapyCrud {
             }
             connectionPool.putBack(connection);
         } catch (IOException | SQLException e) {
-            WriteInfo.writeErrorMessage(e.getMessage());
         }
 
         return therapies;

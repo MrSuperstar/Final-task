@@ -1,14 +1,21 @@
-let currentPatient = null;
+let pacient = null;
 
-function showPatientInformation(patient) {
-    isTableExists("patient_treatment");
-    currentPatient = patient;
-    createTable(currentPatient, generateContent);
-    let button = createBtn('Treat', treatPatient, patient.id);
-    document.getElementById("patients-info").appendChild(button);
+function viewAccount(pacient) {
+    alert(pacient.name);
 }
 
+function record() {
+    doctorAppointment();
+}
 
+function loadFields() {
+    let content = document.getElementById("patient-content");
+
+    let includedDiv = document.createElement("div");
+    includedDiv.id = "include_div";
+
+    content.appendChild(includedDiv);
+}
 
 
 

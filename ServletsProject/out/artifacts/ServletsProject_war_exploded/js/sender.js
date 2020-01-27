@@ -13,6 +13,16 @@ function getPatient(id) {
     sendRequest(xhr, showPatientInformation);
 }
 
+function getUser(login, password) {
+    let xhr = prepareRequest(RESPONSE_TYPE, "GET", `/auth?login=${login}&password=${password}`);
+    xhr.send();
+    xhr.onload = () => {
+        if (xhr.status === 200) {
+            whoIsIt(xhr.response);
+        }
+    };
+}
+
 function discharge(id) {
     let xhr = prepareRequest(RESPONSE_TYPE, "POST", `/patients?id=${id}&status=0`);
     xhr.send();
@@ -61,9 +71,9 @@ function loadContent(page) {
     const cont = document.getElementById('content');
     const http = createRequestObject();
     if (http) {
-        http.open('get', page);
-        http.onreadystatechange = function () {
-            if(http.readyState === 4) {
+        http.open('GET', page);
+        http.onload = () => {
+            if (http.readyState === 4) {
                 cont.innerHTML = http.responseText;
             }
         };
@@ -95,3 +105,4 @@ function sendRequest(xhr, onloadFunc, parameter) {
         }
     };
 }
+

@@ -1,7 +1,5 @@
 package main.java.com.task.daolayer.configure;
 
-import org.apache.log4j.Logger;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -14,25 +12,23 @@ import java.util.List;
  */
 public class ConnectionPool implements BaseConnectionPool{
 
-    private static final Logger logger = Logger.getLogger(ConnectionPool.class);
     private static final int DEFAULT_POOL_SIZE = 10;
-    private static final ConnectionPool connectionPool = new ConnectionPool();
-    private List<Connection> availableConns = new ArrayList<>();
+    private static final ConnectionPool CONNECTION_POOL = new ConnectionPool();
+    private List<Connection> available = new ArrayList<>();
     ConfigurationManager manager = ConfigurationManager.getInstance();
 
     public static ConnectionPool getInstance() {
-        return connectionPool;
+        return CONNECTION_POOL;
     }
 
     private ConnectionPool() {
         try {
             Class.forName(manager.getDataByKey("db.driver"));
         } catch (Exception e) {
-            logger.error(e.getMessage(), e);
         }
 
         for (int i = 0; i < DEFAULT_POOL_SIZE; i++) {
-            availableConns.add(getConnection());
+            available.add(getConnection());
         }
     }
 
@@ -49,7 +45,6 @@ public class ConnectionPool implements BaseConnectionPool{
             String password = manager.getDataByKey("db.password");
             conn = DriverManager.getConnection(url, user, password);
         } catch (Exception e) {
-            logger.error(e.getMessage(), e);
         }
 
         return conn;
@@ -64,9 +59,9 @@ public class ConnectionPool implements BaseConnectionPool{
     public synchronized Connection retrieve() throws SQLException {
         Connection newConn = null;
 
-        if (availableConns.size() > 0) {
-            newConn = availableConns.get(0);
-            availableConns.remove(0);
+        if (available.size() > 0) {
+            newConn = available.get(0);
+            available.remove(0);
 
         } else {
             newConn = getConnection();
@@ -82,7 +77,7 @@ public class ConnectionPool implements BaseConnectionPool{
     @Override
     public synchronized void putBack (Connection c) throws NullPointerException {
         if (c != null) {
-            availableConns.add(c);
+            available.add(c);
         }
     }
 }

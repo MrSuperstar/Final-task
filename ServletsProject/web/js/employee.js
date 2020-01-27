@@ -16,3 +16,6 @@ function dischargePatient(id) {
 function viewAccount(employee) {
     alert(employee.name);
 }
+
+let currentPatient = null;
+
