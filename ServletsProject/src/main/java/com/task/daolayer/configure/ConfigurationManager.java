@@ -12,7 +12,7 @@ import java.util.Properties;
 public class ConfigurationManager {
 
     private static final ConfigurationManager ourInstance = new ConfigurationManager();
-    private static final String PATH_FROM_FILE = "E:\\Development\\Final-task\\ServletsProject\\resources\\config.properties";
+    private static final String PATH_FROM_FILE = "G:\\Development\\ServletsProject\\resources\\config.properties";
     private static final String DEFAULT_KEY = "db.url";
     private FileInputStream fileInputStream = null;
 

@@ -1,11 +1,11 @@
 package main.java.com.task.daolayer.mysqldao;
 
-import com.sun.javafx.binding.Logging;
 import main.java.com.task.daolayer.EmployeeCrud;
 import main.java.com.task.daolayer.configure.BaseConnectionPool;
 import main.java.com.task.daolayer.configure.ConfigurationManager;
 import main.java.com.task.daolayer.configure.ConnectionPool;
 import main.java.com.task.model.person.*;
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
@@ -17,12 +17,14 @@ import java.util.Collection;
  * Implement CRUD operations for an employee entity.
  */
 public class MySqlDaoCrudEmployee implements EmployeeCrud {
+    private static final Logger logger = LogManager.getLogger(MySqlDaoCrudEmployee.class);
     /* A block of constants */
     private static final String EMPLOYEE_BY_ID = "sql.query.select.employeeById";
     private static final String SELECT_ALL_EMPLOYEES = "sql.query.select.employees";
     private static final String UPDATE_EMPLOYEE = "sql.query.update.employee";
     private static final String DELETE_EMPLOYEE = "sql.query.resignation.employee";
     private static final String INSERT_EMPLOYEE = "sql.query.insert.employee";
+    private static final String LOGIN_EMPLOYEE = "sql.query.select.loginEmployee";
     private static final String DEFAULT_POSITION = "DOCTOR";
 
 
@@ -55,8 +57,29 @@ public class MySqlDaoCrudEmployee implements EmployeeCrud {
             }
             connectionPool.putBack(connection);
         } catch (SQLException | IOException e) {
+            logger.error(e.getMessage());
 
         }
+        return employee;
+    }
+
+    @Override
+    public MedicalEmployee login(String login, String password) {
+        MedicalEmployee employee = null;
+
+        try {
+            Connection connection = connectionPool.retrieve();
+            preparedStatement = connection.prepareStatement(manager.getDataByKey(LOGIN_EMPLOYEE));
+            preparedStatement.setString(1, login);
+            preparedStatement.setString(2, password);
+            resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) employee = getById(resultSet.getInt(1));
+            connectionPool.putBack(connection);
+        } catch (SQLException | IOException e) {
+            logger.error(e.getMessage());
+        }
+
         return employee;
     }
 
@@ -88,6 +111,7 @@ public class MySqlDaoCrudEmployee implements EmployeeCrud {
 
             connectionPool.putBack(connection);
         } catch (IOException | SQLException e) {
+            logger.error(e.getMessage());
         }
 
         return employees;
@@ -105,6 +129,7 @@ public class MySqlDaoCrudEmployee implements EmployeeCrud {
             result = preparedStatement.executeUpdate();
             connectionPool.putBack(connection);
         } catch (SQLException | IOException e) {
+            logger.error(e.getMessage());
         }
 
         return result == 1;
@@ -122,6 +147,7 @@ public class MySqlDaoCrudEmployee implements EmployeeCrud {
             result = preparedStatement.executeUpdate();
             connectionPool.putBack(connection);
         } catch (SQLException | IOException e) {
+            logger.error(e.getMessage());
         }
 
         return result == 1;
@@ -141,6 +167,7 @@ public class MySqlDaoCrudEmployee implements EmployeeCrud {
             result = preparedStatement.executeUpdate();
             connectionPool.putBack(connection);
         } catch (SQLException | IOException e) {
+            logger.error(e.getMessage());
         }
 
         return result == 1;

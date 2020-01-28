@@ -5,6 +5,8 @@ import main.java.com.task.daolayer.configure.BaseConnectionPool;
 import main.java.com.task.daolayer.configure.ConfigurationManager;
 import main.java.com.task.daolayer.configure.ConnectionPool;
 import main.java.com.task.model.therapy.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.sql.*;
@@ -13,6 +15,7 @@ import java.util.Collection;
 
 public class MySqlDaoCrudTherapy implements TherapyCrud {
 
+    private static final Logger logger = LogManager.getLogger(MySqlDaoCrudTherapy.class);
     /* Block of constants */
     private static final String OPERATION_BY_ID = "sql.query.select.operationById";
     private static final String DIAGNOSE_BY_ID = "sql.query.select.diagnoseById";
@@ -55,6 +58,7 @@ public class MySqlDaoCrudTherapy implements TherapyCrud {
             }
             connectionPool.putBack(connection);
         } catch (SQLException | IOException e) {
+            logger.error(e.getMessage());
         }
 
         return therapy;
@@ -80,6 +84,7 @@ public class MySqlDaoCrudTherapy implements TherapyCrud {
             }
             connectionPool.putBack(connection);
         } catch (IOException | SQLException e) {
+            logger.error(e.getMessage());
         }
 
         return therapies;

@@ -13,12 +13,19 @@ function getPatient(id) {
     sendRequest(xhr, showPatientInformation);
 }
 
-function getUser(login, password) {
-    let xhr = prepareRequest(RESPONSE_TYPE, "GET", `/auth?login=${login}&password=${password}`);
+function getUser(login, password, status) {
+    let xhr = prepareRequest(RESPONSE_TYPE, "GET", `/auth?login=${login}&password=${password}&status=${status}`);
+
     xhr.send();
     xhr.onload = () => {
         if (xhr.status === 200) {
-            whoIsIt(xhr.response);
+            if (status.toUpperCase() === "EMPLOYEE") {
+                loadContent("views/employee/employeeView.html");
+            } else if (status.toUpperCase() === "PATIENT") {
+                loadContent("views/patient/patientView.html");
+            } else {
+                loadContent("LoginPage.html");
+            }
         }
     };
 }

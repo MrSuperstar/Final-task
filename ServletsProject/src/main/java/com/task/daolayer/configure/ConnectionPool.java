@@ -25,6 +25,7 @@ public class ConnectionPool implements BaseConnectionPool{
         try {
             Class.forName(manager.getDataByKey("db.driver"));
         } catch (Exception e) {
+
         }
 
         for (int i = 0; i < DEFAULT_POOL_SIZE; i++) {

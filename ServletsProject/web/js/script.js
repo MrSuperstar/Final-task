@@ -1,19 +1,12 @@
 let histAPI=!!(window.history && history.pushState);
 
 function input_click() {
-    let login = document.getElementById("uniq-login");
-    let password = document.getElementById("uniq-password");
+    let login = document.getElementById("uniq-login").value;
+    let password = document.getElementById("uniq-password").value;
 
-    getUser(login, password);
+    getUser(login, password, "patient");
 }
 
-function whoIsIt(data) {
-    if (data.status === undefined) {
-        loadContent("views/employee/employeeView.html");
-    } else {
-        loadContent("views/employee/patientView.html");
-    }
-}
 
 function navbarClick(bar_name) {
     switch (bar_name) {

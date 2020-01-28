@@ -8,11 +8,38 @@ import java.util.Objects;
 public abstract class Human implements Person {
     private String name;
     private Gender gender;
+    private String login;
+    private String password;
     private int id;
 
     public Human(String name, Gender gender) {
         this.name = name;
         this.gender = gender;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Human human = (Human) o;
+        return id == human.id &&
+                Objects.equals(name, human.name) &&
+                gender == human.gender &&
+                Objects.equals(login, human.login) &&
+                Objects.equals(password, human.password);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, gender, login, password, id);
     }
 
     public void setName(String name) {
@@ -38,30 +65,17 @@ public abstract class Human implements Person {
     }
 
     @Override
+    public String getLogin() {
+        return null;
+    }
+
+    @Override
+    public String getPassword() {
+        return null;
+    }
+
+    @Override
     public int getId() {
         return id;
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("\nname: ").append(name).append("\tgender: ").append(gender.toString().toLowerCase());
-
-        return builder.toString();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Human human = (Human) o;
-        return id == human.id &&
-                Objects.equals(name, human.name) &&
-                gender == human.gender;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, gender, id);
     }
 }

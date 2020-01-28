@@ -8,6 +8,8 @@ import main.java.com.task.model.person.Gender;
 import main.java.com.task.model.person.Patient;
 import main.java.com.task.model.therapy.*;
 import com.sun.istack.internal.Nullable;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.sql.*;
@@ -19,6 +21,7 @@ import java.util.Collection;
  */
 public class MySqlDaoCrudPatient implements PatientCrud {
 
+    private static final Logger logger = LogManager.getLogger(MySqlDaoCrudPatient.class);
     static MySqlDaoCrudTherapy mySqlDaoCrudTherapy = new MySqlDaoCrudTherapy();
     /* Block of constants */
     private static final String PATIENT_BY_ID = "sql.query.select.patientById";
@@ -26,6 +29,7 @@ public class MySqlDaoCrudPatient implements PatientCrud {
     private static final String UPDATE_PATIENT = "sql.query.update.patient";
     private static final String DELETE_PATIENT = "sql.query.release.patient";
     private static final String INSERT_PATIENT = "sql.query.insert.patient";
+    private static final String LOGIN_PATIENT = "sql.query.select.loginPatient";
     private static int result = 0;
 
     ConfigurationManager manager = ConfigurationManager.getInstance();
@@ -59,6 +63,30 @@ public class MySqlDaoCrudPatient implements PatientCrud {
             }
             connectionPool.putBack(connection);
         } catch (SQLException | IOException e) {
+            logger.error(e.getMessage());
+        }
+
+        return patient;
+    }
+
+    @Override
+    public Patient login(String login, String password) {
+        Patient patient = null;
+
+        try {
+            Connection connection = connectionPool.retrieve();
+            preparedStatement = connection.prepareStatement(manager.getDataByKey(LOGIN_PATIENT));
+            preparedStatement.setString(1, login);
+            preparedStatement.setString(2, password);
+            resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                int id = resultSet.getInt(1);
+                patient = getById(id);
+            }
+            connectionPool.putBack(connection);
+        } catch (SQLException | IOException e) {
+            logger.error(e.getMessage());
         }
 
         return patient;
@@ -87,6 +115,7 @@ public class MySqlDaoCrudPatient implements PatientCrud {
             }
             connectionPool.putBack(connection);
         } catch (IOException | SQLException e) {
+            logger.error(e.getMessage());
         }
 
         return patients;
@@ -106,6 +135,7 @@ public class MySqlDaoCrudPatient implements PatientCrud {
             result = preparedStatement.executeUpdate();
             connectionPool.putBack(connection);
         } catch (SQLException | IOException e) {
+            logger.error(e.getMessage());
         }
 
         return result == 1;
@@ -121,6 +151,7 @@ public class MySqlDaoCrudPatient implements PatientCrud {
             result = preparedStatement.executeUpdate();
             connectionPool.putBack(connection);
         } catch (SQLException | IOException e) {
+            logger.error(e.getMessage());
         }
 
         return result == 1;
@@ -137,6 +168,7 @@ public class MySqlDaoCrudPatient implements PatientCrud {
             result = preparedStatement.executeUpdate();
             connectionPool.putBack(connection);
         } catch (SQLException | IOException e) {
+            logger.error(e.getMessage());
         }
 
         return result == 1;

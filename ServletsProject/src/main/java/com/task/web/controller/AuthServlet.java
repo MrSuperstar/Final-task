@@ -3,6 +3,8 @@ package main.java.com.task.web.controller;
 import com.google.gson.Gson;
 import main.java.com.task.daolayer.BaseFactory;
 import main.java.com.task.daolayer.mysqldao.MySqlDaoFactory;
+import main.java.com.task.model.person.MedicalEmployee;
+import main.java.com.task.model.person.Patient;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,7 +23,10 @@ public class AuthServlet  extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String login = request.getParameter("login");
         String password = request.getParameter("password");
+        MedicalEmployee employee = factory.getEmployeeDao().login(login, password);
+        Patient patient = factory.getPatientDao().login(login, password);
 
-
+        if (employee != null) response.getWriter().write(gson.toJson(employee));
+        if (patient != null) response.getWriter().write(gson.toJson(patient));
     }
 }

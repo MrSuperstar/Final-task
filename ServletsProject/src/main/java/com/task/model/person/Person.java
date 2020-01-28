@@ -4,4 +4,6 @@ public interface Person {
     int getId();
     String getName();
     Gender getGender();
+    String getLogin();
+    String getPassword();
 }
