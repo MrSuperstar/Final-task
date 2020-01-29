@@ -1,9 +1,5 @@
 let pacient = null;
 
-function viewAccount(pacient) {
-    alert(pacient.name);
-}
-
 function record() {
     doctorAppointment();
 }

@@ -27,7 +27,6 @@ public class MySqlDaoCrudEmployee implements EmployeeCrud {
     private static final String LOGIN_EMPLOYEE = "sql.query.select.loginEmployee";
     private static final String DEFAULT_POSITION = "DOCTOR";
 
-
     ConfigurationManager manager = ConfigurationManager.getInstance();
     BaseConnectionPool connectionPool = ConnectionPool.getInstance();
     Statement statement = null;

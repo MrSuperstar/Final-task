@@ -23,10 +23,15 @@ public class AuthServlet  extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String login = request.getParameter("login");
         String password = request.getParameter("password");
-        MedicalEmployee employee = factory.getEmployeeDao().login(login, password);
-        Patient patient = factory.getPatientDao().login(login, password);
+        String status = request.getParameter("status");
 
-        if (employee != null) response.getWriter().write(gson.toJson(employee));
-        if (patient != null) response.getWriter().write(gson.toJson(patient));
+        if ("EMPLOYEE".equals(status.toUpperCase())) {
+            MedicalEmployee employee = factory.getEmployeeDao().login(login, password);
+            response.getWriter().write(gson.toJson(employee));
+        }
+        else {
+            Patient patient = factory.getPatientDao().login(login, password);
+            response.getWriter().write(gson.toJson(patient));
+        }
     }
 }

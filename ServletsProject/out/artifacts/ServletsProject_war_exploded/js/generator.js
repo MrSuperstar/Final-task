@@ -6,6 +6,12 @@ function addDetailsButtonsFromTable(tr, patient) {
     addButtonFromTable('Details', viewSpecificPatient, patient.id, tr)
 }
 
+function addRecordButtonsFromTable(tr, employee) {
+    if ("DOCTOR" === employee.status.toUpperCase()) {
+        addButtonFromTable('Details', viewDoctor, employee.id, tr)
+    }
+}
+
 function addButtonFromTable(text, func, parameter, tr) {
     let td = document.createElement("td");
     let showInfoBtn = createBtn(text, func, parameter);
@@ -14,6 +20,21 @@ function addButtonFromTable(text, func, parameter, tr) {
     tr.appendChild(td);
 }
 
+
+
+
+function navbarPointCreate(name, id) {
+    let li = document.createElement("li");
+    li.id = id;
+    let a = document.createElement("a");
+    a.href = "#";
+    a.innerHTML = name;
+    a.onclick = function () {
+        navbarClick(name);
+    };
+    li.appendChild(a);
+    document.getElementById("nav-bar-block").appendChild(li);
+}
 
 function createSelectObject(className, tr) {
     let td = document.createElement("td");
@@ -29,6 +50,32 @@ function createTable(patients, func) {
     if (func === undefined) func = generateTableContent;
     let table = generateTableStructure("patient-table", titles, func, patients);
     document.getElementById("patients").appendChild(table);
+}
+
+function viewEmployees(employees) {
+    let tit = ["id", "name", "gender", "status"];
+    let table = generateTableStructure("employees-table", tit, generateEmployeesContent, employees);
+    document.getElementById("employees-block").appendChild(table);
+}
+
+function generateEmployeesContent(tbody, employees, needButton = true) {
+    employees.forEach(employee => {
+        let tr = document.createElement("tr");
+        for (let i = 0; i < 3; i++) {
+            let td = document.createElement("td");
+            td.innerHTML = patientInfo(i, employee);
+            tr.appendChild(td);
+        }
+        let td = document.createElement("td");
+        td.innerHTML = employee.status;
+        tr.appendChild(td);
+        if (needButton) {
+            addRecordButtonsFromTable(tr, employee);
+        }
+
+        tbody.appendChild(tr);
+    });
+    return tbody;
 }
 
 function createHeader(tbody, titleCollection) {

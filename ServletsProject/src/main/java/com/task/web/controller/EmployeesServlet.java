@@ -30,6 +30,8 @@ public class EmployeesServlet extends HttpServlet {
             } catch (NumberFormatException e) {
                 e.printStackTrace();
             }
+        } else {
+            response.getWriter().write(gson.toJson(factory.getEmployeeDao().select()));
         }
     }
 

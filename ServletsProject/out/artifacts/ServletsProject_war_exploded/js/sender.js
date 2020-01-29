@@ -1,6 +1,11 @@
-function getEmployee() {
+function getEmployee(employee_id) {
     let xhr = prepareRequest(RESPONSE_TYPE, "GET", `/employees?id=${employee_id}`);
     sendRequest(xhr, viewAccount);
+}
+
+function getEmployees() {
+    let xhr = prepareRequest(RESPONSE_TYPE, "GET", `/employees`);
+    sendRequest(xhr, viewEmployees);
 }
 
 function getPatients() {
@@ -13,16 +18,25 @@ function getPatient(id) {
     sendRequest(xhr, showPatientInformation);
 }
 
-function getUser(login, password, status) {
+function getUser(login, password) {
+    let radio = document.getElementsByName("user_selected");
+    let status = null;
+    radio.forEach(o => {
+        if (o.checked) {
+            status = o.value;
+        }
+    });
     let xhr = prepareRequest(RESPONSE_TYPE, "GET", `/auth?login=${login}&password=${password}&status=${status}`);
 
     xhr.send();
     xhr.onload = () => {
         if (xhr.status === 200) {
-            if (status.toUpperCase() === "EMPLOYEE") {
-                loadContent("views/employee/employeeView.html");
-            } else if (status.toUpperCase() === "PATIENT") {
-                loadContent("views/patient/patientView.html");
+            if (xhr.response !== null) {
+                if (status.toUpperCase() === "EMPLOYEE") {
+                    loadContent("views/employee/employeeView.html");
+                } else {
+                    loadContent("views/patient/patientView.html");
+                }
             } else {
                 loadContent("LoginPage.html");
             }

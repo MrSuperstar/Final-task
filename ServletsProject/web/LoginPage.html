@@ -1,4 +1,11 @@
 <div class="login-form">
+    <p>Log in how: </p>
+    <label>
+        <input type="radio" name="user_selected" value="Patient" checked> Patient
+    </label>
+    <label>
+        <input type="radio" name="user_selected" value="Employee"> Employee
+    </label>
     <label for="uniq-login"><h2>Login: </h2></label><input type="text" id="uniq-login"/>
     <label for="uniq-password"><h2>Password: </h2></label><input type="text" id="uniq-password"/>
     <button class="btn" id="input-btn" onclick="input_click()"> Input </button>
