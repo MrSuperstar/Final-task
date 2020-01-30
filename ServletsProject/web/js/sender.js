@@ -46,7 +46,11 @@ function getUser(login, password) {
 
 function discharge(id) {
     let xhr = prepareRequest(RESPONSE_TYPE, "POST", `/patients?id=${id}&status=0`);
-    xhr.send();
+    let obj = {
+        id: id,
+        status: 0
+    };
+    xhr.send(JSON.stringify(obj));
     xhr.onload = () => {
         if (xhr.status === 200) {
             getPatients();

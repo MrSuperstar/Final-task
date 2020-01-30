@@ -1,3 +1,7 @@
+html, body {
+    height: 100%;
+}
+
 ul {
     list-style-type: none;
     margin: 0;
@@ -22,36 +26,13 @@ li a:hover {
     background-color: #111;
 }
 
-table {
-    font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif, sans-serif;
-    font-size: 14px;
-    text-align: left;
-    border-collapse: collapse;
-    border-radius: 20px;
-    box-shadow: 0 0 0 10px #F2906B;
-    color: #452F21;
-}
-th {
-    padding: 10px 8px;
-    background: white;
-}
-table th:first-child {
-    border-top-left-radius: 20px;
-}
-table th:last-child {
-    border-top-right-radius: 20px;
-}
-td {
-    border-top: 10px solid #F2906B;
-    padding: 8px;
-    background: white;
-}
-table td:first-child {
-    border-bottom-left-radius: 20px;
-}
-table td:last-child {
-    border-bottom-right-radius: 20px;
-}
+table {text-align: center; border-bottom: 2px solid #dfdfdf; border-radius: 6px; border-collapse: separate; border-spacing: 0;}
+table thead tr {color: #ffffff; font-weight: bold; background: #c83240;}
+table tr td {border-right: 1px solid #dfdfdf; padding: 5px;}
+table tr td:last-child {border-right: 0;}
+table tbody tr:nth-child(1n) {background: #f6f6f6;}
+table tbody tr:nth-child(2n) {background: #e6e6e6;}
+table tbody tr:hover {background: #ffe8e8; transition-duration: 0.6s;}
 
 .btn{
     background:#eee;
@@ -64,11 +45,11 @@ table td:last-child {
     transition:all 0.3s;
 }
 .btn:hover{
-    box-shadow:0px -5px 0 #088 inset;
+    box-shadow:0 -5px 0 #088 inset;
 }
 
 #content {
-    width: 1300px;
-    border: 1px solid red;
+    width: 100%;
+    height: 100%;
     margin: auto;
 }

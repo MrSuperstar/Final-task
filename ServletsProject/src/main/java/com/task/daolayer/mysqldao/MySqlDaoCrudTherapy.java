@@ -65,7 +65,7 @@ public class MySqlDaoCrudTherapy implements TherapyCrud {
     }
 
     @Override
-    public synchronized Collection<Therapy> select(String table) {
+    public Collection<Therapy> select(String table) {
         Collection<Therapy> therapies = new ArrayList<>();
 
         try {

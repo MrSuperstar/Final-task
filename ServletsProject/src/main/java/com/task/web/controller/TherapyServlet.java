@@ -15,6 +15,7 @@ import java.util.Collection;
 
 @WebServlet("/therapies")
 public class TherapyServlet extends HttpServlet {
+
     private final Gson gson = new Gson();
     private final BaseFactory factory = new MySqlDaoFactory();
 
@@ -22,9 +23,11 @@ public class TherapyServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json");
         String therapyName = request.getParameter("therapy");
-        if (therapyName != null) {
-            Collection<Therapy> therapies = factory.getTherapyDao().select(therapyName);
-            response.getWriter().write(gson.toJson(therapies));
+        synchronized (factory) {
+            if (therapyName != null) {
+                Collection<Therapy> therapies = factory.getTherapyDao().select(therapyName);
+                response.getWriter().write(gson.toJson(therapies));
+            }
         }
     }
 }
