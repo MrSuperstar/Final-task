@@ -12,6 +12,10 @@ function addRecordButtonsFromTable(tr, employee) {
     }
 }
 
+function addReleaseButtonFromTable(tr, employee) {
+    addButtonFromTable('Release', releaseEmployee, employee.id, tr)
+}
+
 function addButtonFromTable(text, func, parameter, tr) {
     let td = document.createElement("td");
     let showInfoBtn = createBtn(text, func, parameter);
@@ -56,6 +60,30 @@ function viewEmployees(employees) {
     let tit = ["id", "name", "gender", "status"];
     let table = generateTableStructure("employees-table", tit, generateEmployeesContent, employees);
     document.getElementById("employees-block").appendChild(table);
+}
+
+function viewEmployee(employee) {
+    let tit = ["id", "name", "gender", "status"];
+    let table = generateTableStructure("employees-table", tit, generateEmployeeContent, employee);
+    document.getElementById("employees-block").appendChild(table);
+}
+
+function generateEmployeeContent(tbody, employee, needButton = true) {
+    let tr = document.createElement("tr");
+    for (let i = 0; i < 3; i++) {
+        let td = document.createElement("td");
+        td.innerHTML = patientInfo(i, employee);
+        tr.appendChild(td);
+    }
+    let td = document.createElement("td");
+    td.innerHTML = employee.status;
+    tr.appendChild(td);
+    if (needButton) {
+        addReleaseButtonFromTable(tr, employee);
+    }
+
+    tbody.appendChild(tr);
+    return tbody;
 }
 
 function generateEmployeesContent(tbody, employees, needButton = true) {

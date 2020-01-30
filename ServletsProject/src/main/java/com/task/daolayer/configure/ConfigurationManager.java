@@ -14,9 +14,6 @@ public class ConfigurationManager {
 
     private static final ConfigurationManager ourInstance = new ConfigurationManager();
     private static final ResourceBundle bundle = ResourceBundle.getBundle("config");
-    private static final String PATH_FROM_FILE = "config.properties";
-    private static final String DEFAULT_KEY = "db.url";
-    private FileInputStream fileInputStream = null;
 
     public static ConfigurationManager getInstance() {
         return ourInstance;
@@ -28,7 +25,6 @@ public class ConfigurationManager {
 
 
     public String getDataByKey(String key) throws IOException {
-        String data = bundle.getString(key);
         /*Properties property = new Properties();
 
         try {
@@ -40,6 +36,6 @@ public class ConfigurationManager {
             fileInputStream.close();
         }*/
 
-        return data;
+        return bundle.getString(key);
     }
 }

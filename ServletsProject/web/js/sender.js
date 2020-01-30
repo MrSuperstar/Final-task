@@ -58,6 +58,21 @@ function discharge(id) {
     };
 }
 
+function releaseEmployee(id) {
+    let xhr = prepareRequest(RESPONSE_TYPE, "POST", `/employees?id=${id}&status=0`);
+    let obj = {
+        id: id,
+        status: 0
+    };
+    xhr.send(JSON.stringify(obj));
+    xhr.onload = () => {
+        if (xhr.status === 200) {
+            loadContent('views/employee/EmployeeList.html');
+            getEmployees();
+        }
+    };
+}
+
 function treatPatient(id) {
     let request = `/patients?id=${id}`;
 

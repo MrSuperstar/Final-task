@@ -14,8 +14,7 @@ function dischargePatient(id) {
 }
 
 function viewAccount(employee) {
-    loadContent("views/employee/EmployeeList.html");
-    viewEmployees(employee);
+    viewEmployee(employee, generateEmployeeContent);
 }
 
 let currentPatient = null;

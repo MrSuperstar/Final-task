@@ -57,8 +57,9 @@ public class MySqlDaoCrudEmployee implements EmployeeCrud {
             connectionPool.putBack(connection);
         } catch (SQLException | IOException e) {
             logger.error(e.getMessage());
-
         }
+
+        logger.info("Get employee by id successful finished.");
         return employee;
     }
 
