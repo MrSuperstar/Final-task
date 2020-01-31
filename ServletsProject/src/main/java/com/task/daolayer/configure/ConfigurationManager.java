@@ -22,7 +22,6 @@ public class ConfigurationManager {
 
 
     public String getDataByKey(String key) {
-        String s = bundle.getString(key);
-        return s;
+        return bundle.getString(key);
     }
 }

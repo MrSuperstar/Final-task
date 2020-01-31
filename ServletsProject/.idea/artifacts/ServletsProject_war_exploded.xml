@@ -9,7 +9,6 @@
         </element>
         <element id="directory" name="lib">
           <element id="library" level="project" name="com.google.code.gson:gson:2.8.6" />
-          <element id="library" level="project" name="org.apache.logging.log4j:log4j-core:2.13.0" />
         </element>
       </element>
     </root>

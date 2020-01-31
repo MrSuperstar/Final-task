@@ -5,8 +5,7 @@ import main.java.com.task.daolayer.configure.BaseConnectionPool;
 import main.java.com.task.daolayer.configure.ConfigurationManager;
 import main.java.com.task.daolayer.configure.ConnectionPool;
 import main.java.com.task.model.person.*;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -16,7 +15,7 @@ import java.util.Collection;
  * Implement CRUD operations for an employee entity.
  */
 public class MySqlDaoCrudEmployee implements EmployeeCrud {
-    private static final Logger logger = LogManager.getLogger(MySqlDaoCrudEmployee.class);
+    private static final Logger LOGGER = Logger.getLogger(MySqlDaoCrudEmployee.class);
     /* A block of constants */
     private static final String EMPLOYEE_BY_ID = "sql.query.select.employeeById";
     private static final String SELECT_ALL_EMPLOYEES = "sql.query.select.employees";
@@ -55,10 +54,10 @@ public class MySqlDaoCrudEmployee implements EmployeeCrud {
             }
             connectionPool.putBack(connection);
         } catch (SQLException e) {
-            logger.error(e.getMessage());
+            LOGGER.error(e.getMessage());
         }
 
-        logger.info("Get employee by id successful finished.");
+        LOGGER.info("The function 'getById' was completed successfully.");
         return employee;
     }
 
@@ -76,9 +75,9 @@ public class MySqlDaoCrudEmployee implements EmployeeCrud {
             if (resultSet.next()) employee = getById(resultSet.getInt(1));
             connectionPool.putBack(connection);
         } catch (SQLException e) {
-            logger.error(e.getMessage());
+            LOGGER.error(e.getMessage());
         }
-        logger.info("Success");
+        LOGGER.info("The function 'login' was completed successfully.");
         return employee;
     }
 
@@ -110,9 +109,9 @@ public class MySqlDaoCrudEmployee implements EmployeeCrud {
 
             connectionPool.putBack(connection);
         } catch(SQLException e) {
-            logger.error(e.getMessage());
+            LOGGER.error(e.getMessage());
         }
-        logger.info("Success");
+        LOGGER.info("The function 'select' was completed successfully.");
         return employees;
     }
 
@@ -128,9 +127,9 @@ public class MySqlDaoCrudEmployee implements EmployeeCrud {
             result = preparedStatement.executeUpdate();
             connectionPool.putBack(connection);
         } catch (SQLException e) {
-            logger.error(e.getMessage());
+            LOGGER.error(e.getMessage());
         }
-        logger.info("Success");
+        LOGGER.info("The function 'update' was completed successfully.");
         return result == 1;
     }
 
@@ -146,9 +145,9 @@ public class MySqlDaoCrudEmployee implements EmployeeCrud {
             result = preparedStatement.executeUpdate();
             connectionPool.putBack(connection);
         } catch (SQLException e) {
-            logger.error(e.getMessage());
+            LOGGER.error(e.getMessage());
         }
-        logger.info("Success");
+        LOGGER.info("The function 'delete' was completed successfully.");
         return result == 1;
     }
 
@@ -166,9 +165,9 @@ public class MySqlDaoCrudEmployee implements EmployeeCrud {
             result = preparedStatement.executeUpdate();
             connectionPool.putBack(connection);
         } catch (SQLException e) {
-            logger.error(e.getMessage());
+            LOGGER.error(e.getMessage());
         }
-        logger.info("Success");
+        LOGGER.info("The function 'insert' was completed successfully.");
         return result == 1;
     }
 }

@@ -8,8 +8,7 @@ import main.java.com.task.model.person.Gender;
 import main.java.com.task.model.person.Patient;
 import main.java.com.task.model.therapy.*;
 import com.sun.istack.internal.Nullable;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -20,7 +19,7 @@ import java.util.Collection;
  */
 public class MySqlDaoCrudPatient implements PatientCrud {
 
-    private static final Logger logger = LogManager.getLogger(MySqlDaoCrudPatient.class);
+    private static final Logger LOGGER = Logger.getLogger(MySqlDaoCrudPatient.class);
     static MySqlDaoCrudTherapy mySqlDaoCrudTherapy = new MySqlDaoCrudTherapy();
     /* Block of constants */
     private static final String PATIENT_BY_ID = "sql.query.select.patientById";
@@ -62,9 +61,9 @@ public class MySqlDaoCrudPatient implements PatientCrud {
             }
             connectionPool.putBack(connection);
         } catch (SQLException e) {
-            logger.error(e.getMessage());
+            LOGGER.error(e.getMessage());
         }
-        logger.info("Success");
+        LOGGER.info("The function 'getById' was completed successfully.");
         return patient;
     }
 
@@ -85,9 +84,9 @@ public class MySqlDaoCrudPatient implements PatientCrud {
             }
             connectionPool.putBack(connection);
         } catch (SQLException e) {
-            logger.error(e.getMessage());
+            LOGGER.error(e.getMessage());
         }
-        logger.info("success");
+        LOGGER.info("The function 'login' was completed successfully.");
         return patient;
     }
 
@@ -114,9 +113,9 @@ public class MySqlDaoCrudPatient implements PatientCrud {
             }
             connectionPool.putBack(connection);
         } catch(SQLException e) {
-            logger.error(e.getMessage());
+            LOGGER.error(e.getMessage());
         }
-        logger.info("Success");
+        LOGGER.info("The function 'select' was completed successfully.");
         return patients;
     }
 
@@ -134,9 +133,9 @@ public class MySqlDaoCrudPatient implements PatientCrud {
             result = preparedStatement.executeUpdate();
             connectionPool.putBack(connection);
         } catch (SQLException e) {
-            logger.error(e.getMessage());
+            LOGGER.error(e.getMessage());
         }
-        logger.info("Success");
+        LOGGER.info("The function 'update' was completed successfully.");
         return result == 1;
     }
 
@@ -150,9 +149,9 @@ public class MySqlDaoCrudPatient implements PatientCrud {
             result = preparedStatement.executeUpdate();
             connectionPool.putBack(connection);
         } catch (SQLException e) {
-            logger.error(e.getMessage());
+            LOGGER.error(e.getMessage());
         }
-        logger.info("Success");
+        LOGGER.info("The function 'delete' was completed successfully.");
         return result == 1;
     }
 
@@ -167,9 +166,9 @@ public class MySqlDaoCrudPatient implements PatientCrud {
             result = preparedStatement.executeUpdate();
             connectionPool.putBack(connection);
         } catch (SQLException e) {
-            logger.error(e.getMessage());
+            LOGGER.error(e.getMessage());
         }
-        logger.info("Success");
+        LOGGER.info("The function 'insert' was completed successfully.");
         return result == 1;
     }
 

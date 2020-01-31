@@ -1,8 +1,7 @@
 package main.java.com.task.daolayer.configure;
 
 import main.java.com.task.daolayer.mysqldao.MySqlDaoCrudEmployee;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -16,7 +15,7 @@ import java.util.List;
  */
 public class ConnectionPool implements BaseConnectionPool {
 
-    private static final Logger logger = LogManager.getLogger(ConnectionPool.class);
+    private static final Logger LOGGER = Logger.getLogger(ConnectionPool.class);
     private static final int DEFAULT_POOL_SIZE = 10;
     private static final ConnectionPool CONNECTION_POOL = new ConnectionPool();
     private List<Connection> available = new ArrayList<>();
@@ -30,8 +29,7 @@ public class ConnectionPool implements BaseConnectionPool {
         try {
             Class.forName(manager.getDataByKey("db.driver"));
         } catch (Exception e) {
-            logger.error(e.getMessage());
-
+            LOGGER.error(e.getMessage());
         }
 
         for (int i = 0; i < DEFAULT_POOL_SIZE; i++) {
@@ -52,7 +50,7 @@ public class ConnectionPool implements BaseConnectionPool {
             String password = manager.getDataByKey("db.password");
             conn = DriverManager.getConnection(url, user, password);
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            LOGGER.error(e.getMessage());
         }
 
         return conn;

@@ -13,16 +13,13 @@ import java.io.IOException;
 
 @WebServlet("/employees")
 public class EmployeesServlet extends HttpServlet {
-
     private final Gson gson = new Gson();
     private final BaseFactory factory = new MySqlDaoFactory();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
-
         String idString = request.getParameter("id");
-
         if (idString != null) {
             try {
                 int id = Integer.parseInt(idString);

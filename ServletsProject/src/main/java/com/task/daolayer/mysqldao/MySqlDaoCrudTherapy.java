@@ -5,8 +5,7 @@ import main.java.com.task.daolayer.configure.BaseConnectionPool;
 import main.java.com.task.daolayer.configure.ConfigurationManager;
 import main.java.com.task.daolayer.configure.ConnectionPool;
 import main.java.com.task.model.therapy.*;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -14,7 +13,7 @@ import java.util.Collection;
 
 public class MySqlDaoCrudTherapy implements TherapyCrud {
 
-    private static final Logger logger = LogManager.getLogger(MySqlDaoCrudTherapy.class);
+    private static final Logger LOGGER = Logger.getLogger(MySqlDaoCrudTherapy.class);
     /* Block of constants */
     private static final String OPERATION_BY_ID = "sql.query.select.operationById";
     private static final String DIAGNOSE_BY_ID = "sql.query.select.diagnoseById";
@@ -23,7 +22,7 @@ public class MySqlDaoCrudTherapy implements TherapyCrud {
     private static final String SELECT_OPERATION = "sql.query.select.operations";
     private static final String SELECT_DIAGNOSE = "sql.query.select.diagnosis";
     private static final String SELECT_PROCEDURE = "sql.query.select.procedures";
-    private static final String SELECT_MEDICAMENT = "sql.query.select.medicaments";
+    private static final String SELECT_MEDICAMENT = "sql.query.select.medicament";
 
     ConfigurationManager manager = ConfigurationManager.getInstance();
     BaseConnectionPool connectionPool = ConnectionPool.getInstance();
@@ -57,9 +56,9 @@ public class MySqlDaoCrudTherapy implements TherapyCrud {
             }
             connectionPool.putBack(connection);
         } catch (SQLException e) {
-            logger.error(e.getMessage());
+            LOGGER.error(e.getMessage());
         }
-
+        LOGGER.info("The function 'getById' was completed successfully.");
         return therapy;
     }
 
@@ -83,9 +82,9 @@ public class MySqlDaoCrudTherapy implements TherapyCrud {
             }
             connectionPool.putBack(connection);
         } catch (SQLException e) {
-            logger.error(e.getMessage());
+            LOGGER.error(e.getMessage());
         }
-
+        LOGGER.info("The function 'select' was completed successfully.");
         return therapies;
     }
 
