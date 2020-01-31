@@ -11,7 +11,6 @@ import com.sun.istack.internal.Nullable;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -62,10 +61,10 @@ public class MySqlDaoCrudPatient implements PatientCrud {
                 patient.setId(patientId);
             }
             connectionPool.putBack(connection);
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             logger.error(e.getMessage());
         }
-
+        logger.info("Success");
         return patient;
     }
 
@@ -85,10 +84,10 @@ public class MySqlDaoCrudPatient implements PatientCrud {
                 patient = getById(id);
             }
             connectionPool.putBack(connection);
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             logger.error(e.getMessage());
         }
-
+        logger.info("success");
         return patient;
     }
 
@@ -114,10 +113,10 @@ public class MySqlDaoCrudPatient implements PatientCrud {
                 patients.add(patient);
             }
             connectionPool.putBack(connection);
-        } catch (IOException | SQLException e) {
+        } catch(SQLException e) {
             logger.error(e.getMessage());
         }
-
+        logger.info("Success");
         return patients;
     }
 
@@ -134,10 +133,10 @@ public class MySqlDaoCrudPatient implements PatientCrud {
 
             result = preparedStatement.executeUpdate();
             connectionPool.putBack(connection);
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             logger.error(e.getMessage());
         }
-
+        logger.info("Success");
         return result == 1;
     }
 
@@ -150,10 +149,10 @@ public class MySqlDaoCrudPatient implements PatientCrud {
 
             result = preparedStatement.executeUpdate();
             connectionPool.putBack(connection);
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             logger.error(e.getMessage());
         }
-
+        logger.info("Success");
         return result == 1;
     }
 
@@ -167,10 +166,10 @@ public class MySqlDaoCrudPatient implements PatientCrud {
 
             result = preparedStatement.executeUpdate();
             connectionPool.putBack(connection);
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             logger.error(e.getMessage());
         }
-
+        logger.info("Success");
         return result == 1;
     }
 

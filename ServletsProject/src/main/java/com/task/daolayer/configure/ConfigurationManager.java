@@ -1,9 +1,6 @@
 package main.java.com.task.daolayer.configure;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Properties;
 import java.util.ResourceBundle;
 
 /**
@@ -24,18 +21,8 @@ public class ConfigurationManager {
     }
 
 
-    public String getDataByKey(String key) throws IOException {
-        /*Properties property = new Properties();
-
-        try {
-            fileInputStream = new FileInputStream(PATH_FROM_FILE);
-            property.load(fileInputStream);
-            data = property.getProperty(key, DEFAULT_KEY);
-        } catch (FileNotFoundException e) {
-        } finally {
-            fileInputStream.close();
-        }*/
-
-        return bundle.getString(key);
+    public String getDataByKey(String key) {
+        String s = bundle.getString(key);
+        return s;
     }
 }
