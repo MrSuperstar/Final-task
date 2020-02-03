@@ -14,10 +14,10 @@ CREATE TABLE `genders`  (
 
 
 -- ----------------------------
--- Table structure for medicaments
+-- Table structure for medicament
 -- ----------------------------
-DROP TABLE IF EXISTS `medicaments`;
-CREATE TABLE `medicaments`  (
+DROP TABLE IF EXISTS `medicament`;
+CREATE TABLE `medicament`  (
   `MedicamentId` int(11) NOT NULL AUTO_INCREMENT,
   `MedicamentName` varchar(50),
   PRIMARY KEY (`MedicamentId`)
@@ -105,7 +105,7 @@ CREATE TABLE `patients`  (
   FOREIGN KEY (`OperationId`) REFERENCES `operations` (`OperationId`),
   FOREIGN KEY (`DiagnoseId`) REFERENCES `diagnosis` (`DiagnoseId`),
   FOREIGN KEY (`ProcedureId`) REFERENCES `procedures` (`ProcedureId`),
-  FOREIGN KEY (`MedicamentId`) REFERENCES `medicaments` (`MedicamentId`)
+  FOREIGN KEY (`MedicamentId`) REFERENCES `medicament` (`MedicamentId`)
 );
 
 -- ----------------------------
@@ -121,16 +121,16 @@ INSERT INTO `positions` VALUES (1, 'Nurse');
 INSERT INTO `positions` VALUES (2, 'Doctor');
 
 -- ----------------------------
--- Records of medicaments
+-- Records of medicament
 -- ----------------------------
-INSERT INTO `medicaments` VALUES (1, 'M1');
-INSERT INTO `medicaments` VALUES (2, 'M2');
-INSERT INTO `medicaments` VALUES (3, 'M3');
-INSERT INTO `medicaments` VALUES (4, 'M4');
-INSERT INTO `medicaments` VALUES (5, 'M5');
-INSERT INTO `medicaments` VALUES (6, 'M6');
-INSERT INTO `medicaments` VALUES (7, 'M7');
-INSERT INTO `medicaments` VALUES (8, 'M8');
+INSERT INTO `medicament` VALUES (1, 'M1');
+INSERT INTO `medicament` VALUES (2, 'M2');
+INSERT INTO `medicament` VALUES (3, 'M3');
+INSERT INTO `medicament` VALUES (4, 'M4');
+INSERT INTO `medicament` VALUES (5, 'M5');
+INSERT INTO `medicament` VALUES (6, 'M6');
+INSERT INTO `medicament` VALUES (7, 'M7');
+INSERT INTO `medicament` VALUES (8, 'M8');
 
 -- ----------------------------
 -- Records of diagnosis
@@ -218,7 +218,7 @@ CREATE VIEW `getpatients` AS select
 from ((((
 (`patients` join `genders` on(`patients`.`GenderId` = `genders`.`GenderId`))
 left join `diagnosis` on(`patients`.`DiagnoseId` = `diagnosis`.`DiagnoseId`)) 
-left join `medicaments` on(`patients`.`MedicamentId` = `medicaments`.`MedicamentId`)) 
+left join `medicament` on(`patients`.`MedicamentId` = `medicament`.`MedicamentId`)) 
 left join `operations` on(`patients`.`OperationId` = `operations`.`OperationId`)) 
 left join `procedures` on(`patients`.`ProcedureId` = `procedures`.`ProcedureId`)) 
 where (`patients`.`PatientStatus` = 1);
@@ -282,7 +282,7 @@ BEGIN
     LEFT JOIN operations ON patients.OperationId = operations.OperationId	
 	LEFT JOIN diagnosis ON patients.DiagnoseId = diagnosis.DiagnoseId
 	LEFT JOIN procedures ON patients.ProcedureId = procedures.ProcedureId
-	LEFT JOIN medicaments ON patients.MedicamentId = medicaments.MedicamentId
+	LEFT JOIN medicament ON patients.MedicamentId = medicament.MedicamentId
 	
 	WHERE PatientId = id;
 END
@@ -296,7 +296,7 @@ DROP PROCEDURE IF EXISTS `getMedicamentById`;
 delimiter ;;
 CREATE PROCEDURE `getMedicamentById`(id INTEGER)
 BEGIN
-	 SELECT * FROM medicaments WHERE MedicamentId = id;
+	 SELECT * FROM medicament WHERE MedicamentId = id;
 END
 ;;
 delimiter ;

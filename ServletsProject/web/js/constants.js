@@ -1,4 +1,4 @@
-const titles = ["id", "name", "gender", "operation", "diagnose", "procedure", "medicament"];
+const titles = ["id", "name", "gender", "operations", "diagnosis", "procedures", "medicament"];
 const empty = "Empty";
-const therapies = ["operation", "diagnose", "procedure", "medicament"];
+const therapies = ["operations", "diagnosis", "procedures", "medicament"];
 const RESPONSE_TYPE = "json";

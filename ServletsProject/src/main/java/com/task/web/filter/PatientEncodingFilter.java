@@ -1,6 +1,7 @@
 package main.java.com.task.web.filter;
 
 import javax.servlet.*;
+import javax.servlet.http.Cookie;
 import java.io.IOException;
 
 public class PatientEncodingFilter implements Filter {

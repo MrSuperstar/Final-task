@@ -20,15 +20,21 @@ function getPatient(id) {
 
 function getUser(login, password) {
     let radio = document.getElementsByName("user_selected");
-    let status = null;
+    let status = "EMPLOYEE";
+    /*
     radio.forEach(o => {
         if (o.checked) {
             status = o.value;
         }
-    });
-    let xhr = prepareRequest(RESPONSE_TYPE, "GET", `/auth?login=${login}&password=${password}&status=${status}`);
-
-    xhr.send();
+    });*/
+    let xhr = prepareRequest(RESPONSE_TYPE, "POST", `/auth`);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    let obj = {
+        login: login,
+        password: password,
+        status: status
+    };
+    xhr.send(JSON.stringify(obj));
     xhr.onload = () => {
         if (xhr.status === 200) {
             if (xhr.response !== null) {
@@ -98,9 +104,9 @@ function getTherapy(therapyName) {
                 select.options[++index] = new Option(option.name, option.name);
             });
 
-            if (therapyName === "operation") select.value = patientInfo(3, currentPatient);
-            if (therapyName === "diagnose") select.value = patientInfo(4, currentPatient);
-            if (therapyName === "procedure") select.value = patientInfo(5, currentPatient);
+            if (therapyName === "operations") select.value = patientInfo(3, currentPatient);
+            if (therapyName === "diagnosis") select.value = patientInfo(4, currentPatient);
+            if (therapyName === "procedures") select.value = patientInfo(5, currentPatient);
             if (therapyName === "medicament") select.value = patientInfo(6, currentPatient);
         }
     };

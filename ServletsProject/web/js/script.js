@@ -4,7 +4,7 @@ function input_click() {
     let login = document.getElementById("uniq-login").value;
     let password = document.getElementById("uniq-password").value;
 
-    getUser(login, password, "patient");
+    getUser(login, password);
 }
 
 

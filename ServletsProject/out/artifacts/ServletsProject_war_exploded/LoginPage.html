@@ -1,3 +1,12 @@
+<div class="box">
+    <h1>Login</h1>
+    <input id="uniq-login" type="text" name="" placeholder="Username">
+    <input id="uniq-password" type="password" name="" placeholder="Password">
+    <input type="submit" name="" value="Login" onclick="input_click()">
+</div>
+
+
+<!--
 <div class="login-form">
     <p>Log in how: </p>
     <label>
@@ -6,7 +15,18 @@
     <label>
         <input type="radio" name="user_selected" value="Employee"> Employee
     </label>
-    <label for="uniq-login"><h2>Login: </h2></label><input type="text" id="uniq-login"/>
-    <label for="uniq-password"><h2>Password: </h2></label><input type="password" id="uniq-password"/>
-    <button class="btn" id="input-btn" onclick="input_click()"> Input </button>
+    <div class="group-element">
+        <label for="uniq-login">Login:</label>
+        <input class="input-element" type="text" id="uniq-login" placeholder="Login"/>
+    </div>
+    <div class="group-element">
+        <label for="uniq-password">Password:</label>
+        <input class="input-element" type="password" id="uniq-password"  placeholder="Password"/>
+    </div>
+    <input class="btn" type="submit" id="input-btn" onclick="input_click()" value="Sign in"/>
 </div>
+
+<script>
+    /*document.getElementById('auth-form').addEventListener('submit', input_click);*/
+</script>
+-->

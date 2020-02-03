@@ -19,10 +19,7 @@ public class MySqlDaoCrudTherapy implements TherapyCrud {
     private static final String DIAGNOSE_BY_ID = "sql.query.select.diagnoseById";
     private static final String PROCEDURE_BY_ID = "sql.query.select.procedureById";
     private static final String MEDICAMENT_BY_ID = "sql.query.select.medicamentById";
-    private static final String SELECT_OPERATION = "sql.query.select.operations";
-    private static final String SELECT_DIAGNOSE = "sql.query.select.diagnosis";
-    private static final String SELECT_PROCEDURE = "sql.query.select.procedures";
-    private static final String SELECT_MEDICAMENT = "sql.query.select.medicament";
+    private static final String SELECT_THERAPY = "sql.query.select.therapy";
 
     ConfigurationManager manager = ConfigurationManager.getInstance();
     BaseConnectionPool connectionPool = ConnectionPool.getInstance();
@@ -69,7 +66,7 @@ public class MySqlDaoCrudTherapy implements TherapyCrud {
         try {
             Connection connection = connectionPool.retrieve();
             statement = connection.createStatement();
-            resultSet = statement.executeQuery(manager.getDataByKey(getSelectQuery(table)));
+            resultSet = statement.executeQuery(String.format(manager.getDataByKey(SELECT_THERAPY), table));
 
             while (resultSet.next()) {
                 int id = resultSet.getInt(1);
@@ -115,19 +112,15 @@ public class MySqlDaoCrudTherapy implements TherapyCrud {
     }
 
     private static String getQueryByTableName(String name) {
-        return getQuery(name, OPERATION_BY_ID, DIAGNOSE_BY_ID, MEDICAMENT_BY_ID, PROCEDURE_BY_ID);
+        return getQuery(name);
     }
 
-    private static String getSelectQuery(String name) {
-        return getQuery(name, SELECT_OPERATION, SELECT_DIAGNOSE, SELECT_MEDICAMENT, SELECT_PROCEDURE);
-    }
-
-    private static String getQuery(String name, String operationById, String diagnoseById, String medicamentById, String procedureById) {
+    private static String getQuery(String name) {
         switch (name.toUpperCase()) {
-            case "OPERATION" : return operationById;
-            case "DIAGNOSE" : return diagnoseById;
-            case "MEDICAMENT" : return medicamentById;
-            case "PROCEDURE" : return procedureById;
+            case "OPERATION" : return MySqlDaoCrudTherapy.OPERATION_BY_ID;
+            case "DIAGNOSE" : return MySqlDaoCrudTherapy.DIAGNOSE_BY_ID;
+            case "MEDICAMENT" : return MySqlDaoCrudTherapy.MEDICAMENT_BY_ID;
+            case "PROCEDURE" : return MySqlDaoCrudTherapy.PROCEDURE_BY_ID;
         }
         return null;
     }
