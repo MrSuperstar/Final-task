@@ -91,13 +91,32 @@ li a:hover {
     background-color: #111;
 }
 
-table {text-align: center; border-bottom: 2px solid #dfdfdf; border-radius: 6px; border-collapse: separate; border-spacing: 0;}
-table thead tr {color: #ffffff; font-weight: bold; background: #c83240;}
-table tr td {border-right: 1px solid #dfdfdf; padding: 5px;}
-table tr td:last-child {border-right: 0;}
-table tbody tr:nth-child(1n) {background: #f6f6f6;}
-table tbody tr:nth-child(2n) {background: #e6e6e6;}
-table tbody tr:hover {background: #ffe8e8; transition-duration: 0.6s;}
+.table_dark {
+    font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+    font-size: 14px;
+    width: 640px;
+    text-align: left;
+    border-collapse: collapse;
+    background: #252F48;
+    margin: 10px;
+}
+.table_dark th {
+    color: #EDB749;
+    border-bottom: 1px solid #37B5A5;
+    padding: 12px 17px;
+}
+.table_dark td {
+    color: #CAD4D6;
+    border-bottom: 1px solid #37B5A5;
+    border-right:1px solid #37B5A5;
+    padding: 7px 17px;
+}
+.table_dark tr:last-child td {
+    border-bottom: none;
+}
+.table_dark td:last-child {
+    border-right: none;
+}
 
 .btn{
     background:#eee;
@@ -112,6 +131,21 @@ table tbody tr:hover {background: #ffe8e8; transition-duration: 0.6s;}
 .btn:hover{
     box-shadow:0 -5px 0 #088 inset;
 }
+
+.btn-dark {
+    display: inline-block;
+    color: cornflowerblue;
+    font-weight: 700;
+    text-decoration: none;
+    user-select: none;
+    padding: .5em 2em;
+    outline: none;
+    border: 2px solid;
+    border-radius: 1px;
+    transition: 0.2s;
+}
+.btn-dark:hover { background: rgba(255,255,255,.2); }
+.btn-dark:active { background: white; }
 
 #content {
     width: 100%;

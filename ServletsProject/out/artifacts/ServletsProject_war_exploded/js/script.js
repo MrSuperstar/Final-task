@@ -7,14 +7,18 @@ function input_click() {
     getUser(login, password);
 }
 
+window.addEventListener('locationchange', function(){
+    console.log('location changed!');
+});
 
-function navbarClick(bar_name) {
-    switch (bar_name) {
-        case "home":
-            break;
-        case "Log in": loadContent('LoginPage.html');
-            break;
-        case "Employees list": loadContent('views/employee/EmployeeList.html');
+window.onpopstate = function (event) {
+    alert(event);
+};
+
+function urlHandler(bar) {
+    switch (bar) {
+        case "/login": loadContent('LoginPage.html'); break;
+        case "/employees": loadContent('views/employee/EmployeeList.html');
             getEmployees();
             break;
         case "out":
@@ -28,21 +32,16 @@ function viewDoctor(id) {
 }
 
 window.onload = function(){
-    navbarPointCreate('Log in', 'navbar-login');
-    navbarPointCreate('Employees list', 'navbar-employees');
-    /*
-    if (histAPI) {
-        window.setTimeout(function() {
-            window.addEventListener("popstate",
-                function() {
-                    alert(location.pathname);
-                    popstate(location.pathname);
-                },
-                false);
-        }, 1);
-    }*/
-};
+    navbarPointCreate('Log in', 'navbar-login', '/login');
+    navbarPointCreate('Employees list', 'navbar-employees', '/employees');
 
-function popstate(url) {
-    loadContent(url);
-}
+    document.body.addEventListener("click", function (e) {
+        let element = e.target;
+
+        if (element.tagName === 'A' && element.href) {
+            e.preventDefault();
+            history.pushState(null, "", element.pathname);
+            urlHandler(element.pathname);
+        }
+    });
+};

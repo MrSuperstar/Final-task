@@ -27,15 +27,12 @@ function addButtonFromTable(text, func, parameter, tr) {
 
 
 
-function navbarPointCreate(name, id) {
+function navbarPointCreate(name, id, href) {
     let li = document.createElement("li");
     li.id = id;
     let a = document.createElement("a");
-    a.href = "#";
+    a.href = href;
     a.innerHTML = name;
-    a.onclick = function () {
-        navbarClick(name);
-    };
     li.appendChild(a);
     document.getElementById("nav-bar-block").appendChild(li);
 }
@@ -136,6 +133,7 @@ function generateTableStructure(tableId, header, func, collection) {
 
     let table = document.createElement("table");
     table.id = tableId;
+    table.className = "table_dark";
     let tbody = document.createElement("tbody");
 
     createHeader(tbody, header);
@@ -149,7 +147,7 @@ function generateTableStructure(tableId, header, func, collection) {
 
 function createBtn(btnText, func, parameters) {
     let btn = document.createElement("button");
-    btn.className = 'btn';
+    btn.className = 'btn btn-dark';
     let textInBtn = document.createTextNode(btnText);
     btn.appendChild(textInBtn);
 
