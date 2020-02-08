@@ -1,10 +1,19 @@
 function getEmployee(employee_id) {
-    let xhr = prepareRequest(RESPONSE_TYPE, "GET", `/employees?id=${employee_id}`);
+    let xhr = prepareRequest(RESPONSE_TYPE, "POST", `/employees`);
+    let obj = {
+        id: employee_id
+    };
+    xhr.send(JSON.stringify(obj));
+    xhr.onload = () => {
+        if (xhr.status === 200) {
+            viewAccount(xhr.response);
+        }
+    };
     sendRequest(xhr, viewAccount);
 }
 
 function getEmployees() {
-    let xhr = prepareRequest(RESPONSE_TYPE, "GET", `/employees`);
+    let xhr = prepareRequest(RESPONSE_TYPE, "POST", `/employees`);
     sendRequest(xhr, viewEmployees);
 }
 
@@ -65,7 +74,7 @@ function discharge(id) {
 }
 
 function releaseEmployee(id) {
-    let xhr = prepareRequest(RESPONSE_TYPE, "POST", `/employees?id=${id}&status=0`);
+    let xhr = prepareRequest(RESPONSE_TYPE, "POST", `/employees`);
     let obj = {
         id: id,
         status: 0
@@ -93,8 +102,12 @@ function treatPatient(id) {
 
 
 function getTherapy(therapyName) {
-    let xhr = prepareRequest(RESPONSE_TYPE, "GET", `/therapies?therapy=${therapyName}`);
-    xhr.send();
+
+    let xhr = prepareRequest(RESPONSE_TYPE, "POST", `/therapies`);
+    let obj = {
+        therapy: therapyName
+    };
+    xhr.send(JSON.stringify(obj));
 
     xhr.onload = () => {
         if (xhr.status === 200) {
@@ -117,10 +130,11 @@ function loadContent(page) {
     const cont = document.getElementById('content');
     const http = createRequestObject();
     if (http) {
-        http.open('GET', page);
+        http.open('GET', page + '?click=true');
         http.onload = () => {
             if (http.readyState === 4) {
                 cont.innerHTML = http.responseText;
+                eval(cont.getElementsByTagName('script')[0].innerText);
             }
         };
         http.send(null);

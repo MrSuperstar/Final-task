@@ -11,18 +11,6 @@ window.addEventListener('locationchange', function(){
     console.log('location changed!');
 });
 
-function urlHandler(bar) {
-    switch (bar) {
-        case "/login": loadContent('LoginPage.html'); break;
-        case "/employees": loadContent('views/employee/EmployeeList.html');
-            getEmployees();
-            break;
-        case "out":
-            loadContent('LoginPage.html');
-            break;
-    }
-}
-
 function viewDoctor(id) {
     getEmployee(id);
 }
@@ -37,7 +25,12 @@ window.onload = function(){
         if (element.tagName === 'A' && element.href) {
             e.preventDefault();
             history.pushState(null, "", element.pathname);
-            urlHandler(element.pathname);
+            loadContent(element.pathname);
         }
     });
 };
+
+
+function recreateState() {
+    loadContent(window.location.href);
+}

@@ -22,7 +22,7 @@
 
     <filter-mapping>
         <filter-name>TestFilter</filter-name>
-        <url-pattern>/</url-pattern>
+        <url-pattern>/login</url-pattern>
     </filter-mapping>
 
     <filter>

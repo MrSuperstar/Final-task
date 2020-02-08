@@ -47,9 +47,6 @@ public class PatientsServlet extends HttpServlet {
         String idString = request.getParameter("id");
         String status = request.getParameter("status");
         int id = Integer.parseInt(idString);
-        /*
-        JsonParser.parseString("").getAsJsonObject()
-        .get("").getAsBoolean();*/
 
         if (status != null) {
             response.getWriter().write(gson.toJson(factory.getPatientDao().delete(id)));

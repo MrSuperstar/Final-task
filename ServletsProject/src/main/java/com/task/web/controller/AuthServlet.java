@@ -18,12 +18,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 @WebServlet("/auth")
 public class AuthServlet  extends HttpServlet {
 
     private final Gson gson = new Gson();
     private final BaseFactory factory = new MySqlDaoFactory();
+    JsonParser parser = new JsonParser();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -37,23 +41,25 @@ public class AuthServlet  extends HttpServlet {
     }
 
     private void auth(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        JSONObject jsonEnt = new JSONObject();
-        BaseFactory factory = new MySqlDaoFactory();
-        JsonParser parser = new JsonParser();
         JsonObject object = parser.parse(request.getReader().readLine()).getAsJsonObject();
+
         String login = object.get("login").getAsString();
         String password = object.get("password").getAsString();
         String status = object.get("status").getAsString();
 
-        if ("EMPLOYEE".equals(status.toUpperCase())) {
-            MedicalEmployee employee = factory.getEmployeeDao().login(login, password);
-            jsonEnt.put("employee", employee);
-            response.getWriter().write(gson.toJson(employee));
-        }
-        else {
-            Patient patient = factory.getPatientDao().login(login, password);
-            jsonEnt.put("patient", patient);
-            response.getWriter().write(gson.toJson(patient));
+        try {
+            MessageDigest digest = MessageDigest.getInstance("MD5");
+            password = new String(digest.digest(password.getBytes(StandardCharsets.UTF_8)), StandardCharsets.UTF_8);
+            if ("EMPLOYEE".equals(status.toUpperCase())) {
+                MedicalEmployee employee = factory.getEmployeeDao().login(login, password);
+                response.getWriter().write(gson.toJson(employee));
+            }
+            else {
+                Patient patient = factory.getPatientDao().login(login, password);
+                response.getWriter().write(gson.toJson(patient));
+            }
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
         }
     }
 
