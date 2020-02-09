@@ -18,39 +18,45 @@ function getEmployees() {
 }
 
 function getPatients() {
-    let xhr = prepareRequest(RESPONSE_TYPE, "GET", `/patients`);
+    let xhr = prepareRequest(RESPONSE_TYPE, "POST", `/patients`);
     sendRequest(xhr, createTable);
 }
 
 function getPatient(id) {
-    let xhr = prepareRequest(RESPONSE_TYPE, "GET", `/patients?id=${id}`);
-    sendRequest(xhr, showPatientInformation);
+    let xhr = prepareRequest(RESPONSE_TYPE, "POST", `/patients`);
+
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    let obj = {
+        id: id
+    };
+    xhr.send(JSON.stringify(obj));
+    xhr.onload = () => {
+        if (xhr.status === 200) {
+            if (xhr.response !== null)
+                showPatientInformation(xhr.response);
+        }
+    };
 }
 
 function getUser(login, password) {
-    let radio = document.getElementsByName("user_selected");
-    let status = "EMPLOYEE";
-    /*
-    radio.forEach(o => {
-        if (o.checked) {
-            status = o.value;
-        }
-    });*/
     let xhr = prepareRequest(RESPONSE_TYPE, "POST", `/auth`);
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     let obj = {
         login: login,
-        password: password,
-        status: status
+        password: password
     };
     xhr.send(JSON.stringify(obj));
     xhr.onload = () => {
         if (xhr.status === 200) {
             if (xhr.response !== null) {
-                if (status.toUpperCase() === "EMPLOYEE") {
+                if (xhr.response.position.toUpperCase() === "EMPLOYEE") {
                     loadContent("views/employee/employeeView.html");
-                } else {
+                } else if (xhr.response.position.toUpperCase() === "PATIENT") {
                     loadContent("views/patient/patientView.html");
+                } else if (xhr.response.position.toUpperCase() === "ADMIN") {
+                    loadContent("views/employee/adminView.html");
+                } else {
+                    loadContent("LoginPage.html");
                 }
             } else {
                 loadContent("LoginPage.html");
@@ -102,7 +108,6 @@ function treatPatient(id) {
 
 
 function getTherapy(therapyName) {
-
     let xhr = prepareRequest(RESPONSE_TYPE, "POST", `/therapies`);
     let obj = {
         therapy: therapyName
@@ -134,7 +139,10 @@ function loadContent(page) {
         http.onload = () => {
             if (http.readyState === 4) {
                 cont.innerHTML = http.responseText;
-                eval(cont.getElementsByTagName('script')[0].innerText);
+                let script = cont.getElementsByTagName('script');
+
+                if (script[0] !== undefined) eval(script[0].innerText);
+
             }
         };
         http.send(null);

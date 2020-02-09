@@ -7,7 +7,7 @@ import main.java.com.task.model.therapy.Procedure;
 
 import java.util.Objects;
 
-public class Patient extends Human {
+public class Patient extends User {
 
     private Diagnose diagnose;
     private Procedure procedure;
@@ -16,6 +16,7 @@ public class Patient extends Human {
 
     public Patient(String name, Gender gender) {
         super(name, gender);
+        setPosition(User.Position.PATIENT);
     }
 
     @Override

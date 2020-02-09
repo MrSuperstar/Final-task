@@ -8,6 +8,7 @@ public class MySqlDaoFactory implements BaseFactory {
     public EmployeeCrud employeeCrud = null;
     public PatientCrud patientCrud = null;
     public TherapyCrud therapyCrud = null;
+    public UserCrud userCrud = null;
 
     @Override
     public EmployeeCrud getEmployeeDao() {
@@ -25,5 +26,11 @@ public class MySqlDaoFactory implements BaseFactory {
     public TherapyCrud getTherapyDao() {
         if (therapyCrud == null) therapyCrud = new MySqlDaoCrudTherapy();
         return therapyCrud;
+    }
+
+    @Override
+    public UserCrud getUserDao() {
+        if (userCrud == null) userCrud = new MySqlDaoCrudUser();
+        return userCrud;
     }
 }

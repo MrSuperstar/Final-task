@@ -6,6 +6,7 @@ import main.java.com.task.daolayer.configure.ConfigurationManager;
 import main.java.com.task.daolayer.configure.ConnectionPool;
 import main.java.com.task.model.person.Gender;
 import main.java.com.task.model.person.Patient;
+import main.java.com.task.model.person.User;
 import main.java.com.task.model.therapy.*;
 import com.sun.istack.internal.Nullable;
 import org.apache.log4j.Logger;
@@ -27,7 +28,7 @@ public class MySqlDaoCrudPatient implements PatientCrud {
     private static final String UPDATE_PATIENT = "sql.query.update.patient";
     private static final String DELETE_PATIENT = "sql.query.release.patient";
     private static final String INSERT_PATIENT = "sql.query.insert.patient";
-    private static final String LOGIN_PATIENT = "sql.query.select.loginPatient";
+    private static final String LOGIN_PATIENT = "sql.query.select.patientByUserId";
     private static int result = 0;
 
     ConfigurationManager manager = ConfigurationManager.getInstance();
@@ -39,11 +40,19 @@ public class MySqlDaoCrudPatient implements PatientCrud {
     @Nullable
     @Override
     public Patient getById(int id) {
+        return getPatient(id, PATIENT_BY_ID);
+    }
+
+    public Patient getPatientByUserId(int id) {
+        return getPatient(id, LOGIN_PATIENT);
+    }
+
+    private Patient getPatient(int id, String loginPatient) {
         Patient patient = null;
 
         try {
             Connection connection = connectionPool.retrieve();
-            preparedStatement = connection.prepareStatement(manager.getDataByKey(PATIENT_BY_ID));
+            preparedStatement = connection.prepareStatement(manager.getDataByKey(loginPatient));
             preparedStatement.setInt(1, id);
             resultSet = preparedStatement.executeQuery();
 
@@ -69,24 +78,12 @@ public class MySqlDaoCrudPatient implements PatientCrud {
 
     @Override
     public Patient login(String login, String password) {
-        Patient patient = null;
+        MySqlDaoCrudUser mySqlDaoCrudUser = new MySqlDaoCrudUser();
+        User user = mySqlDaoCrudUser.authentication(login, password);
 
-        try {
-            Connection connection = connectionPool.retrieve();
-            preparedStatement = connection.prepareStatement(manager.getDataByKey(LOGIN_PATIENT));
-            preparedStatement.setString(1, login);
-            preparedStatement.setString(2, password);
-            resultSet = preparedStatement.executeQuery();
-
-            if (resultSet.next()) {
-                int id = resultSet.getInt(1);
-                patient = getById(id);
-            }
-            connectionPool.putBack(connection);
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage());
-        }
+        Patient patient = getPatientByUserId(user.getId());
         LOGGER.info("The function 'login' was completed successfully.");
+
         return patient;
     }
 

@@ -7,6 +7,7 @@ import main.java.com.task.daolayer.BaseFactory;
 import main.java.com.task.daolayer.mysqldao.MySqlDaoFactory;
 import main.java.com.task.model.person.MedicalEmployee;
 import main.java.com.task.model.person.Patient;
+import main.java.com.task.model.person.User;
 import org.json.JSONObject;
 
 import javax.servlet.RequestDispatcher;
@@ -31,6 +32,7 @@ public class AuthServlet  extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
     }
 
     @Override
@@ -45,18 +47,30 @@ public class AuthServlet  extends HttpServlet {
 
         String login = object.get("login").getAsString();
         String password = object.get("password").getAsString();
-        String status = object.get("status").getAsString();
 
         try {
-            MessageDigest digest = MessageDigest.getInstance("MD5");
-            password = new String(digest.digest(password.getBytes(StandardCharsets.UTF_8)), StandardCharsets.UTF_8);
-            if ("EMPLOYEE".equals(status.toUpperCase())) {
-                MedicalEmployee employee = factory.getEmployeeDao().login(login, password);
-                response.getWriter().write(gson.toJson(employee));
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] hashInBytes = md.digest(password.getBytes(StandardCharsets.UTF_8));
+
+            StringBuilder sb = new StringBuilder();
+            for (byte b : hashInBytes) {
+                sb.append(String.format("%02x", b));
             }
-            else {
-                Patient patient = factory.getPatientDao().login(login, password);
-                response.getWriter().write(gson.toJson(patient));
+            password = sb.toString();
+            User user = factory.getUserDao().authentication(login, password);
+
+            switch (user.getPosition().toString().toUpperCase()) {
+                case "ADMIN":
+                    response.getWriter().write(gson.toJson(user));
+                    break;
+                case "EMPLOYEE":
+                    MedicalEmployee employee = factory.getEmployeeDao().login(login, password);
+                    response.getWriter().write(gson.toJson(employee));
+                    break;
+                case "PATIENT":
+                    Patient patient = factory.getPatientDao().login(login, password);
+                    response.getWriter().write(gson.toJson(patient));
+                    break;
             }
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();

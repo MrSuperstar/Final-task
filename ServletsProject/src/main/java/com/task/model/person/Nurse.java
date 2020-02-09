@@ -5,13 +5,14 @@ import main.java.com.task.model.therapy.Procedure;
 
 import java.util.Objects;
 
-public class Nurse extends Human implements MedicalEmployee {
+public class Nurse extends User implements MedicalEmployee {
 
     private Status status;
 
     public Nurse(String name, Gender gender) {
         super(name, gender);
         status = Status.Nurse;
+        setPosition(Position.EMPLOYEE);
     }
 
     @Override

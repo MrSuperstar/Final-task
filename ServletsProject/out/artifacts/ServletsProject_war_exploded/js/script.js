@@ -1,15 +1,9 @@
-let histAPI=!!(window.history && history.pushState);
-
 function input_click() {
     let login = document.getElementById("uniq-login").value;
     let password = document.getElementById("uniq-password").value;
 
     getUser(login, password);
 }
-
-window.addEventListener('locationchange', function(){
-    console.log('location changed!');
-});
 
 function viewDoctor(id) {
     getEmployee(id);

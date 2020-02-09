@@ -24,9 +24,6 @@ function addButtonFromTable(text, func, parameter, tr) {
     tr.appendChild(td);
 }
 
-
-
-
 function navbarPointCreate(name, id, href) {
     let li = document.createElement("li");
     li.id = id;

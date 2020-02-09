@@ -1,10 +1,13 @@
 package main.java.com.task.web.controller;
 
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import main.java.com.task.daolayer.BaseFactory;
 import main.java.com.task.daolayer.mysqldao.MySqlDaoFactory;
@@ -24,23 +27,36 @@ public class PatientsServlet extends HttpServlet {
     private final BaseFactory factory = new MySqlDaoFactory();
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("application/json");
-
-        String idString = request.getParameter("id");
-        if (idString != null) {
-            try {
-                int id = Integer.parseInt(idString);
-                Patient p = factory.getPatientDao().getById(id);
-                response.getWriter().write(gson.toJson(p));
-                return;
-            } catch (NumberFormatException e) {
-                e.printStackTrace();
-            }
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        boolean page = Boolean.parseBoolean(request.getParameter("click"));
+        if (page) {
+            request.getRequestDispatcher("/views/patient/patientView.html").include(request, response);
+        } else {
+            request.getRequestDispatcher("/index.html").forward(request, response);
         }
-        response.getWriter().write(gson.toJson(factory.getPatientDao().select()));
     }
 
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("application/json");
+
+        String line = request.getReader().readLine();;
+        if (line != null && line.length() > 0) {
+            JsonObject object = JsonParser.parseString(line).getAsJsonObject();
+            JsonElement idString = object.get("id");
+            if (idString != null) {
+                try {
+                    int id = idString.getAsInt();
+                    response.getWriter().write(gson.toJson(factory.getPatientDao().getById(id)));
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
+            }
+        } else {
+            response.getWriter().write(gson.toJson(factory.getPatientDao().select()));
+        }
+    }
+/*
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
@@ -65,5 +81,5 @@ public class PatientsServlet extends HttpServlet {
             response.getWriter().write(gson.toJson(factory.getPatientDao().update(patient)));
         }
 
-    }
+    }*/
 }

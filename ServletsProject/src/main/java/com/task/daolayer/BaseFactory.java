@@ -4,4 +4,5 @@ public interface BaseFactory {
     EmployeeCrud getEmployeeDao();
     PatientCrud getPatientDao();
     TherapyCrud getTherapyDao();
+    UserCrud getUserDao();
 }

@@ -8,21 +8,11 @@ import java.util.Objects;
 public abstract class Human implements Person {
     private String name;
     private Gender gender;
-    private String login;
-    private String password;
     private int id;
 
     public Human(String name, Gender gender) {
         this.name = name;
         this.gender = gender;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     @Override
@@ -32,14 +22,12 @@ public abstract class Human implements Person {
         Human human = (Human) o;
         return id == human.id &&
                 Objects.equals(name, human.name) &&
-                gender == human.gender &&
-                Objects.equals(login, human.login) &&
-                Objects.equals(password, human.password);
+                gender == human.gender;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, gender, login, password, id);
+        return Objects.hash(name, gender, id);
     }
 
     public void setName(String name) {
@@ -77,5 +65,14 @@ public abstract class Human implements Person {
     @Override
     public int getId() {
         return id;
+    }
+
+    @Override
+    public String toString() {
+        return "Human{" +
+                "name='" + name + '\'' +
+                ", gender=" + gender +
+                ", id=" + id +
+                '}';
     }
 }

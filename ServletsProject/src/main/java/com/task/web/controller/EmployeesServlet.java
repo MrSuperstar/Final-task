@@ -20,7 +20,6 @@ import java.io.IOException;
 public class EmployeesServlet extends HttpServlet {
     private final Gson gson = new Gson();
     private final BaseFactory factory = new MySqlDaoFactory();
-    JsonParser parser = new JsonParser();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {

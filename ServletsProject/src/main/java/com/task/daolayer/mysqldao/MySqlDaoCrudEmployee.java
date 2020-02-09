@@ -15,14 +15,15 @@ import java.util.Collection;
  * Implement CRUD operations for an employee entity.
  */
 public class MySqlDaoCrudEmployee implements EmployeeCrud {
-    private static final Logger LOGGER = Logger.getLogger(MySqlDaoCrudEmployee.class);
+
     /* A block of constants */
+    private static final Logger LOGGER = Logger.getLogger(MySqlDaoCrudEmployee.class);
     private static final String EMPLOYEE_BY_ID = "sql.query.select.employeeById";
     private static final String SELECT_ALL_EMPLOYEES = "sql.query.select.employees";
     private static final String UPDATE_EMPLOYEE = "sql.query.update.employee";
     private static final String DELETE_EMPLOYEE = "sql.query.resignation.employee";
     private static final String INSERT_EMPLOYEE = "sql.query.insert.employee";
-    private static final String LOGIN_EMPLOYEE = "sql.query.select.loginEmployee";
+    private static final String LOGIN_EMPLOYEE = "sql.query.select.employeeByUserId";
     private static final String DEFAULT_POSITION = "DOCTOR";
 
     ConfigurationManager manager = ConfigurationManager.getInstance();
@@ -33,11 +34,30 @@ public class MySqlDaoCrudEmployee implements EmployeeCrud {
 
     @Override
     public MedicalEmployee getById(int id) {
+        return getMedicalEmployee(id, EMPLOYEE_BY_ID);
+    }
+
+    private MedicalEmployee getByUserId(int userId) {
+        return getMedicalEmployee(userId, LOGIN_EMPLOYEE);
+    }
+
+    @Override
+    public MedicalEmployee login(String login, String password) {
+        MySqlDaoCrudUser mySqlDaoCrudUser = new MySqlDaoCrudUser();
+        User user = mySqlDaoCrudUser.authentication(login, password);
+
+        MedicalEmployee employee = getByUserId(user.getId());
+
+        LOGGER.info("The function 'login' was completed successfully.");
+        return employee;
+    }
+
+    private MedicalEmployee getMedicalEmployee(int id, String loginEmployee) {
         MedicalEmployee employee = null;
 
         try {
             Connection connection = connectionPool.retrieve();
-            preparedStatement = connection.prepareStatement(manager.getDataByKey(EMPLOYEE_BY_ID));
+            preparedStatement = connection.prepareStatement(manager.getDataByKey(loginEmployee));
             preparedStatement.setInt(1, id);
             resultSet = preparedStatement.executeQuery();
 
@@ -58,26 +78,6 @@ public class MySqlDaoCrudEmployee implements EmployeeCrud {
         }
 
         LOGGER.info("The function 'getById' was completed successfully.");
-        return employee;
-    }
-
-    @Override
-    public MedicalEmployee login(String login, String password) {
-        MedicalEmployee employee = null;
-
-        try {
-            Connection connection = connectionPool.retrieve();
-            preparedStatement = connection.prepareStatement(manager.getDataByKey(LOGIN_EMPLOYEE));
-            preparedStatement.setString(1, login);
-            preparedStatement.setString(2, password);
-            resultSet = preparedStatement.executeQuery();
-
-            if (resultSet.next()) employee = getById(resultSet.getInt(1));
-            connectionPool.putBack(connection);
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage());
-        }
-        LOGGER.info("The function 'login' was completed successfully.");
         return employee;
     }
 

@@ -7,12 +7,13 @@ import main.java.com.task.model.therapy.Procedure;
 
 import java.util.Objects;
 
-public class Doctor extends Human implements Healing {
+public class Doctor extends User implements Healing {
     private Status status;
 
     public Doctor(String name, Gender gender) {
         super(name, gender);
         status = Status.Doctor;
+        setPosition(Position.EMPLOYEE);
     }
 
     @Override
