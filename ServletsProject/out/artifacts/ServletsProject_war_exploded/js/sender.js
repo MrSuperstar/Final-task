@@ -51,10 +51,9 @@ function getUser(login, password) {
             if (xhr.response !== null) {
                 if (xhr.response.position.toUpperCase() === "EMPLOYEE") {
                     loadContent("views/employee/employeeView.html");
+                    employeesPosition = xhr.response.status.toUpperCase()
                 } else if (xhr.response.position.toUpperCase() === "PATIENT") {
                     loadContent("views/patient/patientView.html");
-                } else if (xhr.response.position.toUpperCase() === "ADMIN") {
-                    loadContent("views/employee/adminView.html");
                 } else {
                     loadContent("LoginPage.html");
                 }
@@ -66,7 +65,7 @@ function getUser(login, password) {
 }
 
 function discharge(id) {
-    let xhr = prepareRequest(RESPONSE_TYPE, "POST", `/patients?id=${id}&status=0`);
+    let xhr = prepareRequest(RESPONSE_TYPE, "POST", `/patients`);
     let obj = {
         id: id,
         status: 0
@@ -121,13 +120,17 @@ function getTherapy(therapyName) {
             xhr.response.forEach(option => {
                 select.options[++index] = new Option(option.name, option.name);
             });
-
-            if (therapyName === "operations") select.value = patientInfo(3, currentPatient);
-            if (therapyName === "diagnosis") select.value = patientInfo(4, currentPatient);
-            if (therapyName === "procedures") select.value = patientInfo(5, currentPatient);
-            if (therapyName === "medicament") select.value = patientInfo(6, currentPatient);
         }
     };
+}
+
+function initPatientTherapyField(index, select) {
+    select.value = patientInfo(index, currentPatient);
+    if (employeesPosition.toString().toUpperCase() !== "DOCTOR") {
+        if (select.id.toUpperCase() === "OPERATIONS" || select.id.toUpperCase() === "DIAGNOSIS") {
+            select.disabled = true;
+        }
+    }
 }
 
 

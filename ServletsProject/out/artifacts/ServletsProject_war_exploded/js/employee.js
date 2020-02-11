@@ -18,4 +18,5 @@ function viewAccount(employee) {
 }
 
 let currentPatient = null;
+let employeesPosition = null;
 

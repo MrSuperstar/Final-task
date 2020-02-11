@@ -40,7 +40,7 @@ public class PatientsServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
 
-        String line = request.getReader().readLine();;
+        String line = request.getReader().readLine();
         if (line != null && line.length() > 0) {
             JsonObject object = JsonParser.parseString(line).getAsJsonObject();
             JsonElement idString = object.get("id");
