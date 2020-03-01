@@ -5,6 +5,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -24,8 +25,9 @@ public class EmployeesServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         boolean page = Boolean.parseBoolean(request.getParameter("click"));
-        if (page) {
-            request.getRequestDispatcher("/views/employee/EmployeeList.html").include(request, response);
+        final HttpSession session = request.getSession();
+        if (page || session.getAttribute("role") != null) {
+            request.getRequestDispatcher("/views/employee/employeeView.html").include(request, response);
         } else {
             request.getRequestDispatcher("/index.html").forward(request, response);
         }

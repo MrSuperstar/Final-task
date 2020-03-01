@@ -5,6 +5,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -31,7 +32,9 @@ public class PatientsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         boolean page = Boolean.parseBoolean(request.getParameter("click"));
-        if (page) {
+        final HttpSession session = request.getSession();
+
+        if (page || session.getAttribute("role") != null) {
             request.getRequestDispatcher("/views/patient/patientView.html").include(request, response);
         } else {
             request.getRequestDispatcher("/index.html").forward(request, response);
@@ -52,12 +55,13 @@ public class PatientsServlet extends HttpServlet {
 
             if (statusString != null && idString != null) {
                 discharge(idString, response);
+            } else if (healing != null) {
+                treatment(object, idString.getAsInt(), response);
             } else if (idString != null) {
                 initPatient(idString, response);
             } else if (userIdString != null) {
                 initUser(userIdString, response);
-            } else if (healing != null) {
-                treatment(object, idString.getAsInt(), response);
+
             }
         } else {
             response.getWriter().write(gson.toJson(factory.getPatientDao().select()));
@@ -105,30 +109,4 @@ public class PatientsServlet extends HttpServlet {
 
         response.getWriter().write(gson.toJson(factory.getPatientDao().update(patient)));
     }
-/*
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("application/json");
-        String idString = request.getParameter("id");
-        String status = request.getParameter("status");
-        int id = Integer.parseInt(idString);
-
-        if (status != null) {
-            response.getWriter().write(gson.toJson(factory.getPatientDao().delete(id)));
-        } else {
-            int operation = Integer.parseInt(request.getParameter("operation"));
-            int diagnose = Integer.parseInt(request.getParameter("diagnose"));
-            int medicament = Integer.parseInt(request.getParameter("medicament"));
-            int procedure = Integer.parseInt(request.getParameter("procedure"));
-
-            Patient patient = factory.getPatientDao().getById(id);
-            patient.setOperation((Operation) factory.getTherapyDao().getById(operation, "operation"));
-            patient.setProcedure((Procedure) factory.getTherapyDao().getById(procedure, "procedure"));
-            patient.setDiagnose((Diagnose) factory.getTherapyDao().getById(diagnose, "diagnose"));
-            patient.setMedicament((Medicament) factory.getTherapyDao().getById(medicament, "medicament"));
-
-            response.getWriter().write(gson.toJson(factory.getPatientDao().update(patient)));
-        }
-
-    }*/
 }

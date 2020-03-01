@@ -39,9 +39,9 @@ public class AuthServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        auth(request, response);
+        //auth(request, response);
     }
-
+/*
     private void auth(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         JsonObject object = parser.parse(request.getReader().readLine()).getAsJsonObject();
 
@@ -60,9 +60,6 @@ public class AuthServlet extends HttpServlet {
             User user = factory.getUserDao().authentication(login, password);
 
             switch (user.getPosition().toString().toUpperCase()) {
-                case "ADMIN":
-                    response.getWriter().write(gson.toJson(user));
-                    break;
                 case "EMPLOYEE":
                     MedicalEmployee employee = factory.getEmployeeDao().login(login, password);
                     response.getWriter().write(gson.toJson(employee));
@@ -75,22 +72,5 @@ public class AuthServlet extends HttpServlet {
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-    }
-
-    private boolean isAuth(HttpServletRequest request, HttpServletResponse response, String cookieName)
-            throws ServletException, IOException {
-        Cookie[] cookies = request.getCookies();
-        Cookie cookie = null;
-
-        if(cookies !=null) {
-            for(Cookie c: cookies) {
-                if(cookieName.equals(c.getName())) {
-                    cookie = c;
-                    break;
-                }
-            }
-        }
-
-        return cookie != null;
-    }
+    }*/
 }

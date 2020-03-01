@@ -40,6 +40,16 @@ function getPatient(id, func) {
     };
 }
 
+function logout() {
+    let xhr = prepareRequest(RESPONSE_TYPE, "GET", `/logout`);
+    xhr.send();
+    xhr.onload = () => {
+        if (xhr.status === 200) {
+            loadContent("LoginPage.html");
+        }
+    }
+}
+
 function getUser(login, password) {
     let xhr = prepareRequest(RESPONSE_TYPE, "POST", `/auth`);
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -113,15 +123,27 @@ function releaseEmployee(id) {
 }
 
 function treatPatient(id) {
-    let request = `/patients?id=${id}`;
-
+    let arr = [];
     therapies.forEach(therapy => {
         let elem = document.getElementById(therapy).options.selectedIndex;
-        request += `&${therapy}=${elem + 1}`;
+        arr.push(elem + 1);
     });
 
-    let xhr = prepareRequest(RESPONSE_TYPE, "POST", request);
-    sendRequest(xhr, alert);
+    let xhr = prepareRequest(RESPONSE_TYPE, "POST", `/patients`);
+    let obj = {
+        id: id,
+        operation: arr[0],
+        diagnose: arr[1],
+        procedure: arr[2],
+        medicament: arr[3],
+        healing: true,
+    };
+    xhr.send(JSON.stringify(obj));
+    xhr.onload = () => {
+        if (xhr.status === 200) {
+            getPatients();
+        }
+    };
 }
 
 function getTherapy(therapyName) {
@@ -140,16 +162,6 @@ function getTherapy(therapyName) {
         }
     };
     xhr.send(JSON.stringify(obj));
-}
-
-function initPatientTherapyField(index, select) {
-    console.log(patientInfo(index, currentPatient));
-    select.value = patientInfo(index, currentPatient);
-    if (employeesPosition.toString().toUpperCase() !== "DOCTOR") {
-        if (select.id.toUpperCase() === "OPERATIONS" || select.id.toUpperCase() === "DIAGNOSIS") {
-            select.disabled = true;
-        }
-    }
 }
 
 

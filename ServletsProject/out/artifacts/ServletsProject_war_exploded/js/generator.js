@@ -211,3 +211,13 @@ function showPatientInformation(patient) {
     let button = createBtn('Treat', treatPatient, patient.id);
     document.getElementById("patients-info").appendChild(button);
 }
+
+function initPatientTherapyField(index, select) {
+    console.log(patientInfo(index, currentPatient));
+    select.value = patientInfo(index, currentPatient);
+    if (employeesPosition.toString().toUpperCase() !== "DOCTOR") {
+        if (select.id.toUpperCase() === "OPERATIONS" || select.id.toUpperCase() === "DIAGNOSIS") {
+            select.disabled = true;
+        }
+    }
+}
