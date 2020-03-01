@@ -10,6 +10,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import main.java.com.task.daolayer.BaseFactory;
+import main.java.com.task.daolayer.mysqldao.MySqlDaoCrudEmployee;
 import main.java.com.task.daolayer.mysqldao.MySqlDaoFactory;
 import com.google.gson.Gson;
 import main.java.com.task.model.person.Patient;
@@ -17,12 +18,13 @@ import main.java.com.task.model.therapy.Diagnose;
 import main.java.com.task.model.therapy.Medicament;
 import main.java.com.task.model.therapy.Operation;
 import main.java.com.task.model.therapy.Procedure;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 
 @WebServlet("/patients")
 public class PatientsServlet extends HttpServlet {
-
+    private static final Logger LOGGER = Logger.getLogger(PatientsServlet.class);
     private final Gson gson = new Gson();
     private final BaseFactory factory = new MySqlDaoFactory();
 
@@ -44,17 +46,64 @@ public class PatientsServlet extends HttpServlet {
         if (line != null && line.length() > 0) {
             JsonObject object = JsonParser.parseString(line).getAsJsonObject();
             JsonElement idString = object.get("id");
-            if (idString != null) {
-                try {
-                    int id = idString.getAsInt();
-                    response.getWriter().write(gson.toJson(factory.getPatientDao().getById(id)));
-                } catch (NumberFormatException e) {
-                    e.printStackTrace();
-                }
+            JsonElement userIdString = object.get("userId");
+            JsonElement statusString = object.get("status");
+            JsonElement healing = object.get("healing");
+
+            if (statusString != null && idString != null) {
+                discharge(idString, response);
+            } else if (idString != null) {
+                initPatient(idString, response);
+            } else if (userIdString != null) {
+                initUser(userIdString, response);
+            } else if (healing != null) {
+                treatment(object, idString.getAsInt(), response);
             }
         } else {
             response.getWriter().write(gson.toJson(factory.getPatientDao().select()));
         }
+    }
+
+    private void discharge(JsonElement idString, HttpServletResponse response) {
+        try {
+            int id = idString.getAsInt();
+            response.getWriter().write(gson.toJson(factory.getPatientDao().delete(id)));
+        } catch (NumberFormatException | IOException e) {
+            LOGGER.error(e.getMessage());
+        }
+    }
+
+    private void initPatient(JsonElement idString, HttpServletResponse response) {
+        try {
+            int id = idString.getAsInt();
+            response.getWriter().write(gson.toJson(factory.getPatientDao().getById(id)));
+        } catch (NumberFormatException | IOException e) {
+            LOGGER.error(e.getMessage());
+        }
+    }
+
+    private void initUser(JsonElement idString, HttpServletResponse response) {
+        try {
+            int id = idString.getAsInt();
+            response.getWriter().write(gson.toJson(factory.getPatientDao().getPatientByUserId(id)));
+        } catch (NumberFormatException | IOException e) {
+            LOGGER.error(e.getMessage());
+        }
+    }
+
+    private void treatment(JsonObject object, int id, HttpServletResponse response) throws IOException {
+        JsonElement operation = object.get("operation");
+        JsonElement diagnose = object.get("diagnose");
+        JsonElement medicament =  object.get("medicament");
+        JsonElement procedure = object.get("procedure");
+
+        Patient patient = factory.getPatientDao().getById(id);
+        patient.setOperation((Operation) factory.getTherapyDao().getById(operation.getAsInt(), "operation"));
+        patient.setProcedure((Procedure) factory.getTherapyDao().getById(procedure.getAsInt(), "procedure"));
+        patient.setDiagnose((Diagnose) factory.getTherapyDao().getById(diagnose.getAsInt(), "diagnose"));
+        patient.setMedicament((Medicament) factory.getTherapyDao().getById(medicament.getAsInt(), "medicament"));
+
+        response.getWriter().write(gson.toJson(factory.getPatientDao().update(patient)));
     }
 /*
     @Override

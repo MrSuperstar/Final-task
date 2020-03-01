@@ -24,7 +24,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 @WebServlet("/auth")
-public class AuthServlet  extends HttpServlet {
+public class AuthServlet extends HttpServlet {
 
     private final Gson gson = new Gson();
     private final BaseFactory factory = new MySqlDaoFactory();

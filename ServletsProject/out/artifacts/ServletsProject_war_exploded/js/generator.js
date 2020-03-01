@@ -50,7 +50,6 @@ function createSelectObject(className, tr) {
     }
 }
 
-
 function createTable(patients, func) {
     if (func === undefined) func = generateTableContent;
     let table = generateTableStructure("patient-table", titles, func, patients);
@@ -193,6 +192,17 @@ function generateContent(tbody, patient) {
     return tbody;
 }
 
+function viewTherapies() {
+    therapies.forEach(therapy => {
+        let element = document.getElementById("patient-" + therapy);
+        switch (therapy) {
+            case "operations": element.innerText = patientInfo(3, currentPatient); break;
+            case "diagnosis": element.innerText = patientInfo(4, currentPatient); break;
+            case "medicament": element.innerText = patientInfo(5, currentPatient); break;
+            case "procedures": element.innerText = patientInfo(6, currentPatient); break;
+        }
+    });
+}
 
 function showPatientInformation(patient) {
     isTableExists("patient_treatment");

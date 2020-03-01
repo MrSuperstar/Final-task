@@ -3,7 +3,7 @@ package main.java.com.task.web.filter;
 import javax.servlet.*;
 import java.io.IOException;
 
-public class TestFilter implements Filter {
+public class LoginFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
 

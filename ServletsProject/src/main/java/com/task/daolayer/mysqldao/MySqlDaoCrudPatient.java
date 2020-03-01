@@ -43,6 +43,7 @@ public class MySqlDaoCrudPatient implements PatientCrud {
         return getPatient(id, PATIENT_BY_ID);
     }
 
+    @Override
     public Patient getPatientByUserId(int id) {
         return getPatient(id, LOGIN_PATIENT);
     }

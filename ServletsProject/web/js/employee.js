@@ -5,7 +5,7 @@ function viewPatientsList() {
 
 function viewSpecificPatient(id) {
     loadContent("views/employee/Patients.html");
-    getPatient(id);
+    getPatient(id, showPatientInformation);
 }
 
 function dischargePatient(id) {

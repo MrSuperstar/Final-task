@@ -11,7 +11,12 @@ function checkValid(obj) {
     return empty;
 }
 
-
+/**
+ * Get user info by specific fields
+ * @param field_number
+ * @param patient
+ * @returns {string|*}
+ */
 function patientInfo(field_number, patient) {
     switch (field_number) {
         case 0:

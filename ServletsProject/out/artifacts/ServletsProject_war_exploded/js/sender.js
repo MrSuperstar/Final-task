@@ -22,7 +22,7 @@ function getPatients() {
     sendRequest(xhr, createTable);
 }
 
-function getPatient(id) {
+function getPatient(id, func) {
     let xhr = prepareRequest(RESPONSE_TYPE, "POST", `/patients`);
 
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -33,7 +33,9 @@ function getPatient(id) {
     xhr.onload = () => {
         if (xhr.status === 200) {
             if (xhr.response !== null)
-                showPatientInformation(xhr.response);
+                currentPatient = xhr.response;
+                func(xhr.response);
+
         }
     };
 }
@@ -53,6 +55,7 @@ function getUser(login, password) {
                     loadContent("views/employee/employeeView.html");
                     employeesPosition = xhr.response.status.toUpperCase()
                 } else if (xhr.response.position.toUpperCase() === "PATIENT") {
+                    initPatient(xhr.response.id);
                     loadContent("views/patient/patientView.html");
                 } else {
                     loadContent("LoginPage.html");
@@ -60,6 +63,22 @@ function getUser(login, password) {
             } else {
                 loadContent("LoginPage.html");
             }
+        }
+    };
+}
+
+function initPatient(id) {
+    let xhr = prepareRequest(RESPONSE_TYPE, "POST", `/patients`);
+
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    let obj = {
+        userId: id
+    };
+    xhr.send(JSON.stringify(obj));
+    xhr.onload = () => {
+        if (xhr.status === 200) {
+            if (xhr.response !== null)
+                currentPatient = xhr.response;
         }
     };
 }
@@ -105,13 +124,11 @@ function treatPatient(id) {
     sendRequest(xhr, alert);
 }
 
-
 function getTherapy(therapyName) {
     let xhr = prepareRequest(RESPONSE_TYPE, "POST", `/therapies`);
     let obj = {
         therapy: therapyName
     };
-    xhr.send(JSON.stringify(obj));
 
     xhr.onload = () => {
         if (xhr.status === 200) {
@@ -122,9 +139,11 @@ function getTherapy(therapyName) {
             });
         }
     };
+    xhr.send(JSON.stringify(obj));
 }
 
 function initPatientTherapyField(index, select) {
+    console.log(patientInfo(index, currentPatient));
     select.value = patientInfo(index, currentPatient);
     if (employeesPosition.toString().toUpperCase() !== "DOCTOR") {
         if (select.id.toUpperCase() === "OPERATIONS" || select.id.toUpperCase() === "DIAGNOSIS") {
