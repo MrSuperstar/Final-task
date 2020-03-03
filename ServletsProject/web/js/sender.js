@@ -159,6 +159,13 @@ function getTherapy(therapyName) {
             xhr.response.forEach(option => {
                 select.options[++index] = new Option(option.name, option.name);
             });
+
+            switch (therapyName.toString().toUpperCase()) {
+                case "OPERATIONS": initPatientTherapyField(3, select); break;
+                case "DIAGNOSIS": initPatientTherapyField(4, select); break;
+                case "PROCEDURES": initPatientTherapyField(5, select); break;
+                case "MEDICAMENT": initPatientTherapyField(6, select); break;
+            }
         }
     };
     xhr.send(JSON.stringify(obj));

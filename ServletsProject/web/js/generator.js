@@ -41,13 +41,6 @@ function createSelectObject(className, tr) {
     td.appendChild(select);
     tr.appendChild(td);
     getTherapy(className);
-
-    switch (className.toString().toUpperCase()) {
-        case "OPERATIONS": initPatientTherapyField(3, select); break;
-        case "DIAGNOSIS": initPatientTherapyField(4, select); break;
-        case "PROCEDURES": initPatientTherapyField(5, select); break;
-        case "MEDICAMENT": initPatientTherapyField(6, select); break;
-    }
 }
 
 function createTable(patients, func) {
